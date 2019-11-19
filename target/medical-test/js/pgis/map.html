@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<link href="ol.css" rel="stylesheet">
+	<script type="text/javascript" src="ol-debug.js"></script>
+	<script type="text/javascript" src="electroMap.js"></script>
+	<script type="text/javascript" src="jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="ol3Map.js"></script>
+	<title>测试 - 电子地图</title>
+</head>
+<body>
+	<div class="center-map-div" style="position:relative;margin-top:15px;">
+		<!--地图  -->
+		<div class="map" id="map_camera">
+			<div id="mapHandleBtn" style="width: 210px;position: absolute;left:50px;z-index: 1000;">
+				<a onclick="addBoxInteraction();" class="polygonBox">
+					<i class="iconfont icon-region maptop_btn"></i>
+					框选
+				</a>
+				<!--<a onclick="addPolygonInteraction();" class="polygonBox polygonBtnBox">
+					<i class="iconfont icon-icon-dianjiduobianxing maptop_btn" style="font-size: 19px;"></i>
+					自定义
+				</a>-->
+
+				<a onclick="clearMapFeatures();" class="polygonBox">
+					<i class="iconfont icon-region maptop_btn"></i>
+					清除
+				</a>
+			</div>
+		</div>
+		<!--地图点位信息-->
+		<div class="map-point-play-wrap map-camera-point-play-wrap"  id="div_camera_point" style="position:fixed;z-index: 5000;display: none;height:505px;">
+			<div class="map-point-play fl" id="map-point-play">
+				<input type="hidden" id="playAddrr"/>
+				<div class="map-point" id="camera_name">
+					<!-- 长沙市岳麓区星蓝湾东1 -->
+				</div>
+				<div class="map-ocx-wrap">
+					<div class="map-ocx-title" id="ocx_title">
+						<!--  视频标题 -->
+					</div>
+					<div class="row" style="height: 120px;padding-top:30px;display: none" id="div_seach">
+						<div class="form-group fl" style="padding-left: 20px;">
+							<label>请输入开始时间</label>
+							<input class="form-control easyui-datetimebox"  name="startTimeStr" id="startTimeStr" style="width: 170px">
+						</div>
+						<div class="form-group fl" style="margin-left: 5px;">
+							<label>请输入结束时间</label>
+							<input class="form-control easyui-datetimebox" name="endTimeStr" id="endTimeStr" style="width: 170px">
+						</div>
+						<div class="form-group search_btn_group">
+							<button class="btn btn-primary" id="searchBtn" onclick="historyStreamPlay()" type="button">查询</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="map-circle-camera fr">
+				<div class="video_module_title">
+					<!-- <span></span> -->选中点位
+				</div>
+				<div class="selected_camera_point" id="camera_point_list" >
+					<ul>
+					</ul>
+					
+				</div>
+			</div>
+			<div class="page-close" onclick="closeThisThis(this)">X</div>
+		</div>
+		<!-- 播放器 end -->
+	</div>
+	
+	<script type="text/javascript">
+		var isPgis = true;
+		var mapCenterLongitude = 112.96456, mapCenterLatitude = 28.19873;
+		var basePath = 'http://43.4.112.101:8080/u2vd/', titeServePath = 'http://43.4.100.86/map/';
+		//var basePath = 'http://43.4.112.115:8080/', titeServePath = 'http://43.4.100.86/map/';
+
+		initOLMap();
+		//queryCameraByRadius(mapCenterLongitude,mapCenterLatitude,1000,mapLevel);
+		queryCurrentViewCameraData();
+	</script>
+</body>
+</html>

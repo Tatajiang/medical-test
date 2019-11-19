@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:jee="http://www.springframework.org/schema/jee"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:task="http://www.springframework.org/schema/task"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+      http://www.springframework.org/schema/context
+      http://www.springframework.org/schema/context/spring-context-3.1.xsd
+      http://www.springframework.org/schema/tx
+	  http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+      http://www.springframework.org/schema/util
+      http://www.springframework.org/schema/util/spring-util-3.1.xsd
+      http://www.springframework.org/schema/jee
+      http://www.springframework.org/schema/jee/spring-jee-3.1.xsd
+	  http://www.springframework.org/schema/task
+	  http://www.springframework.org/schema/task/spring-task-3.1.xsd
+      http://www.springframework.org/schema/aop
+      http://www.springframework.org/schema/aop/spring-aop-3.1.xsd"
+      default-lazy-init="false">
+
+	<bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer" />
+
+	<context:annotation-config />
+	
+	<aop:aspectj-autoproxy />
+	
+	<bean class="spring.WebConfig" />
+
+	<tx:annotation-driven/>
+	
+	<task:annotation-driven executor="taskExecutor" scheduler="taskScheduler" />
+	
+	<task:executor id="taskExecutor" pool-size="5" />
+	
+	<task:scheduler id="taskScheduler" pool-size="10" />
+	<!-- test start -->
+	<context:component-scan
+		name-generator="com.homolo.framework.bean.ProjectBeanNameGenerator"
+		base-package="com.jiang.medical" />
+	<!-- test end -->
+	
+	
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="${dataSource.jndiName}" />
+	</bean>
+	
+	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+		<!-- 解决 Transaction rolled back because it has been marked as rollback-only 这个异常 -->
+		<property name="globalRollbackOnParticipationFailure" value="false" />
+	</bean>
+	
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.show_sql">${hibernate.showsql}</prop>
+				<prop key="hibernate.format_sql">${hibernate.showsql}</prop>
+				<prop key="jdbc.fetch_size">50</prop>
+				<prop key="jdbc.batch_size">125</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.cache.region.factory_class">net.sf.ehcache.hibernate.SingletonEhCacheRegionFactory</prop>
+				<prop key="hibernate.cache.use_query_cache">false</prop>
+				<prop key="hibernate.cache.use_second_level_cache">false</prop>
+				<prop key="hibernate.query.substitutions">true 1,false 0</prop>
+			</props>
+		</property>
+		<property name="namingStrategy">
+			<bean class="org.hibernate.cfg.ImprovedNamingStrategy"/>
+		</property>
+		<property name="packagesToScan">
+			<ref bean="hibernate.packagesToScan"/>  
+		</property>
+	</bean>
+</beans>

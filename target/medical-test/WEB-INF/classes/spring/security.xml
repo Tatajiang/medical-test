@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+    xmlns:beans="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+    <global-method-security pre-post-annotations="enabled">
+        <!-- AspectJ pointcut expression that locates our "post" method and applies security that way
+        <protect-pointcut expression="execution(* bigbank.*Service.post*(..))" access="ROLE_TELLER"/>
+        -->
+    </global-method-security>
+
+<http use-expressions="true">
+    	<!-- <intercept-url pattern="/favicon.ico" access="ROLE_ANONYMOUS" /> -->
+		<intercept-url pattern="/admin/login.jsp**" access="permitAll()" />
+		<!-- <intercept-url pattern="/admin/*.jsp" access="isAuthenticated()" /> -->
+        <intercept-url pattern="/workbench.jsp**" access="isAuthenticated()" /> 
+        <intercept-url pattern="/**" access="permitAll()"/>
+        <form-login 
+        	login-page="/admin/login.jsp"
+        	default-target-url="/admin/login.jsp?result=success"
+        	authentication-failure-url="/admin/login.jsp?result=error"
+        	always-use-default-target="true" 
+        	authentication-details-source-ref="webAuthenticationDetailsSource" 
+        	 />
+		<logout
+        	success-handler-ref="userLogoutSuccessHandler"
+        	invalidate-session="true"
+        	logout-url="/admin/login.jsp?result=out"
+        />
+    </http>
+    
+    
+    <beans:bean id="tokenBasedRememberMeServices" class="org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices">
+    	<beans:constructor-arg value="medical"/>
+    	<beans:constructor-arg ref="userDetailsService"/>
+    </beans:bean>
+    
+    <beans:bean id="webAuthenticationDetailsSource" class="com.homolo.usersystem.security.ProxyWebAuthenticationDetailsSource"/>
+    
+	<authentication-manager alias="authenticationManager">
+        <authentication-provider ref="daoAuthenticationProvider">
+        </authentication-provider>
+        <authentication-provider ref="rememberMeAuthenticationProvider">
+        </authentication-provider>
+    </authentication-manager>
+    
+    <beans:bean id="rememberMeAuthenticationProvider" class="org.springframework.security.authentication.RememberMeAuthenticationProvider">
+    	<beans:constructor-arg value="medical"/>
+    </beans:bean>
+    
+    <beans:bean id="daoAuthenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+    	<beans:property name="passwordEncoder" ref="us.passwordEncoder"/>
+    	<beans:property name="hideUserNotFoundExceptions" value="false"/>
+    	<beans:property name="userDetailsService" ref="userDetailsService"/>
+    </beans:bean>
+
+	<beans:bean id="userDetailsService" class="com.homolo.usersystem.security.BasedAccountUserProvider">
+		<beans:property name="userGroupRoleProvider">
+			<beans:bean class="com.homolo.usersystem.security.UserGroupRoleProvider" />
+		</beans:property>
+	</beans:bean>
+
+	<beans:bean id="userLogoutSuccessHandler" class="com.homolo.usersystem.security.UserLogoutSuccessHandler">
+		<beans:property name="defaultTargetUrl" value="/index.jsp" />
+	</beans:bean>
+	<beans:bean id="onlineUserFilter" class="com.homolo.usersystem.security.OnlineUserFilter" />
+	
+	
+</beans:beans>
