@@ -138,7 +138,27 @@ public class MemusInit {
 		if(obj == null) {
 			initMemu(id , "登录日志", parentId, "登录日志", intShowIndex, "/admin/system/login_log.jsp", "登录日志", 2, false, "");
 		}
-		
+
+		parentId = "39783f90b89840c0ba5485cf8ff8fe61";
+		id = parentId;
+		intShowIndex += 5;
+		obj = operationManager.getObject(id);
+		//如果是超级管理员权限 则增加到list
+		listOperation.add(id);
+		if(obj == null) {
+			initMemu(id , "体检管理", Constant.TREE_ROOT_ID, "体检管理", intShowIndex, null, "体检管理", 1, false, "fa fa-car");
+		}
+
+
+		intShowIndex+=5;
+		id="d2615093683211e9939fb025aa1bea79";
+		obj = operationManager.getObject(id);
+		//如果是超级管理员权限 则增加到list
+		listOperation.add(id);
+		if(obj == null) {
+			initMemu(id , "体检项目管理", parentId, "体检项目管理", intShowIndex, "/admin/operation/medicalItem.jsp", "体检项目管理", 2, false, "");
+		}
+
 		
 		//首页图表统计
 		listOperation.add(Constant.HOME_CHARTS_ID);

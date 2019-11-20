@@ -5,6 +5,7 @@ import com.homolo.framework.dao.DomainObjectDao;
 import com.homolo.framework.dao.hibernate.BaseHibernateDaoSupport;
 import com.homolo.framework.events.EventTarget;
 import com.homolo.framework.module.ModuleConfig;
+import com.jiang.medical.platform.operation.domain.MedicalItem;
 import com.jiang.medical.platform.system.domain.LoginLog;
 import com.jiang.medical.platform.system.domain.Operation;
 import com.jiang.medical.platform.system.domain.SysRoleOperation;
@@ -55,5 +56,17 @@ public class ProjectConfig {
 		return new BaseHibernateDaoSupport<LoginLog>(LoginLog.class);
 	}
 
+
+	/* *
+	 * @Description: 体检项目
+	 * @Param: []
+	 * @return: com.homolo.framework.dao.DomainObjectDao<com.jiang.medical.platform.operation.domain.MedicalItem>
+	 * @Author: zhantuo.jiang
+	 * @date: 2019/11/20 20:16
+	 */
+	@Bean(name = PREFIX + "MedicalItemDao")
+	public DomainObjectDao<MedicalItem> generateMedicalItemDao() {
+		return new BaseHibernateDaoSupport<MedicalItem>(MedicalItem.class);
+	}
 	
 }

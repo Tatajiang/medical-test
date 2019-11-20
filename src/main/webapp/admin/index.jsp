@@ -6,9 +6,10 @@
 	<title><%=title %></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
+	<script src="<%=path %>/js/jquery-3.3.1.min.js"></script>
 	<script src="<%=path %>/js/bootstrap/js/bootstrap.js"></script>
-	<script src="<%=path %>/js/jquery-3.4.1.min.js"></script>
 	<jsp:include page="./inc/resource.jsp" />
+
 	<style type="text/css">
 		.border{
 			border-bottom:5px solid #E4E4E4;
@@ -25,9 +26,9 @@
 			$(".tile-stats").each(function(){
 				$(this).mouseover(function(){
 					$(this).addClass("border");
-				}).mouseout(function (){  
+				}).mouseout(function (){
 					$(this).removeClass("border");
-		        });  
+				});
 			});
 			$('#tabs-content').css({
 				minHeight:$(window).height() - 150
@@ -51,26 +52,26 @@
 		            <!-- 底部按钮 -->
 	          	</div>
 	        </div>
-        
+
 	        <!-- 顶部导航 -->
 			<jsp:include page="./inc/top.jsp" />
-	        
+
 	        <!-- 右侧内容 -->
 	        <div class="right_col" role="main">
-	        	<ul class="nav nav-tabs" role="tablist"  id="tabs-nav">  
+	        	<ul class="nav nav-tabs" role="tablist"  id="tabs-nav">
 				  	<li role="presentation" class="active" id="tab_home">
 				  		<a href="#home" aria-controls="home" role="tab" data-toggle="tab"><i class="fa fa-home"></i>首页</a>
-				  	</li>  
-				</ul>  
+				  	</li>
+				</ul>
 				<div class="tab-content x_panel" id="tabs-content">
 					<div role="tabpanel" class="tab-pane active" id="home" >
-					
+
 					</div>
 				</div>
 	        </div>
       	</div>
     </div>
-    
+
     <!-- 底部导航 -->
 	<jsp:include page="./inc/bottom.jsp" />
 </body>
