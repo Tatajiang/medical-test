@@ -290,7 +290,7 @@
 
     function items(id,name) {
         //打开新的Tab页面
-        addTabs({id: id, title: name+"-详情", url: $ctx + "/admin/operation/relevance.jsp?medicalId="+id , close: true});
+        addTabs({id: name+id, title: name+"-详情", url: $ctx + "/admin/operation/relevance.jsp?medicalId="+id , close: true});
     }
 
 

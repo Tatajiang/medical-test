@@ -45,10 +45,15 @@
 <script type="text/javascript">
 
     $(document).ready(function(){
-
+        //获取套餐id
+        <%
+           String medicalId = request.getParameter("medicalId");
+        %>
+        var medicalId = '<%=medicalId%>'
         //搜索按钮
         $('#search').click(function(){
             var params = $('#searchForm').serializeObject();
+            params.medicalId = medicalId;
             $('#dataList').bootstrapTable("refreshOptions", {
                 queryParams:function(p){
                     return serializeTableQueryParams(p, params);
@@ -60,6 +65,7 @@
         $('#reset').click(function(){
             $('#searchForm').clearForm();
             var params = $('#searchForm').serializeObject();
+            params.medicalId = medicalId;
             $('#dataList').bootstrapTable("refreshOptions", {
                 queryParams:function(p){
                     return serializeTableQueryParams(p, params);
@@ -123,7 +129,7 @@
             pageList: [10, 25, 50, 100],
             // 得到查询的参数
             queryParams : function (params) {
-                return serializeTableQueryParams(params, {});
+                return serializeTableQueryParams(params, {medicalId:medicalId});
             },
             columns : [
                 {field : 'checked', checkbox : true, visible: true},
@@ -143,9 +149,6 @@
 
     //选择项目
     function itemChoose(){
-        <%
-           String medicalId = request.getParameter("medicalId");
-        %>
         Modal.dialog({id:"dialog_choose_item",title:"选择体检项目",url:$ctx + "/admin/operation/chooseItem.jsp?medicalId=<%=medicalId%>",width:1200,height:800});
     }
 
