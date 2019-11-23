@@ -9,7 +9,7 @@ public enum GenderEnum {
 
     Male("男性"),
     Woman("女性"),
-    Both("两则都");
+    Both("两者都");
 
     private String name;
     private GenderEnum(String name){

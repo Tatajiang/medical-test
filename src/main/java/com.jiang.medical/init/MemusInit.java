@@ -156,7 +156,16 @@ public class MemusInit {
 		//如果是超级管理员权限 则增加到list
 		listOperation.add(id);
 		if(obj == null) {
-			initMemu(id , "体检项目管理", parentId, "体检项目管理", intShowIndex, "/admin/operation/medicalItem.jsp", "体检项目管理", 2, false, "");
+			initMemu(id , "套餐管理", parentId, "套餐管理", intShowIndex, "/admin/operation/medicalItem.jsp", "套餐管理", 2, false, "");
+		}
+
+		intShowIndex+=5;
+		id="e2615096683211e9939fb025aa1bga71";
+		obj = operationManager.getObject(id);
+		//如果是超级管理员权限 则增加到list
+		listOperation.add(id);
+		if(obj == null) {
+			initMemu(id , "项目管理", parentId, "项目管理", intShowIndex, "/admin/operation/item.jsp", "项目管理", 2, false, "");
 		}
 
 		

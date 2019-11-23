@@ -5,7 +5,9 @@ import com.homolo.framework.dao.DomainObjectDao;
 import com.homolo.framework.dao.hibernate.BaseHibernateDaoSupport;
 import com.homolo.framework.events.EventTarget;
 import com.homolo.framework.module.ModuleConfig;
-import com.jiang.medical.platform.operation.domain.MedicalItem;
+import com.jiang.medical.platform.operation.domain.Item;
+import com.jiang.medical.platform.operation.domain.MedicalItems;
+import com.jiang.medical.platform.operation.domain.Relevance;
 import com.jiang.medical.platform.system.domain.LoginLog;
 import com.jiang.medical.platform.system.domain.Operation;
 import com.jiang.medical.platform.system.domain.SysRoleOperation;
@@ -58,15 +60,32 @@ public class ProjectConfig {
 
 
 	/* *
-	 * @Description: 体检项目
+	 * @Description: 体检套餐
 	 * @Param: []
-	 * @return: com.homolo.framework.dao.DomainObjectDao<com.jiang.medical.platform.operation.domain.MedicalItem>
+	 * @return: com.homolo.framework.dao.DomainObjectDao<com.jiang.medical.platform.operation.domain.MedicalItems>
 	 * @Author: zhantuo.jiang
 	 * @date: 2019/11/20 20:16
 	 */
-	@Bean(name = PREFIX + "MedicalItemDao")
-	public DomainObjectDao<MedicalItem> generateMedicalItemDao() {
-		return new BaseHibernateDaoSupport<MedicalItem>(MedicalItem.class);
+	@Bean(name = PREFIX + "MedicalItemsDao")
+	public DomainObjectDao<MedicalItems> generateMedicalItemsDao() {
+		return new BaseHibernateDaoSupport<MedicalItems>(MedicalItems.class);
 	}
-	
+
+
+	/* *
+	 * @Description: 项目内容
+	 * @Param: []
+	 * @return: com.homolo.framework.dao.DomainObjectDao<com.jiang.medical.platform.operation.domain.Item>
+	 * @Author: zhantuo.jiang
+	 * @date: 2019/11/23 13:26
+	 */
+	@Bean(name = PREFIX + "ItemDao")
+	public DomainObjectDao<Item> generateItemDao() {
+		return new BaseHibernateDaoSupport<Item>(Item.class);
+	}
+
+	@Bean(name = PREFIX + "RelevanceDao")
+	public DomainObjectDao<Relevance> generateRelevanceDao() {
+		return new BaseHibernateDaoSupport<Relevance>(Relevance.class);
+	}
 }

@@ -34,6 +34,7 @@ public class UserInit {
 			user.setLoginId("admin");
 			user.setPassword(MD5Util.encryptPassword("888888"));
 			user.setNickname("系统管理员");
+			user.setPhone("15100000000");
 			user.setRoleIds(Constant.SYSTEMCONSTANT_ADMIN_ROLE_ID);
 			userManager.create(user);
 		}

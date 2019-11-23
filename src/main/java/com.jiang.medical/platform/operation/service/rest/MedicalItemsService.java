@@ -8,9 +8,9 @@ import com.homolo.framework.rest.RequestParameters;
 import com.homolo.framework.rest.RestService;
 import com.homolo.framework.rest.ReturnResult;
 import com.homolo.framework.service.ServiceResult;
-import com.jiang.medical.platform.operation.condition.MedicalItemCondition;
-import com.jiang.medical.platform.operation.domain.MedicalItem;
-import com.jiang.medical.platform.operation.manager.MedicalItemManager;
+import com.jiang.medical.platform.operation.condition.MedicalItemsCondition;
+import com.jiang.medical.platform.operation.domain.MedicalItems;
+import com.jiang.medical.platform.operation.manager.MedicalItemsManager;
 import com.jiang.medical.util.AutoEvaluationUtil;
 import com.jiang.medical.util.DateUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -25,17 +25,17 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @description: 体检项目服务类
+ * @description: 体检套餐服务类
  * @author: zhantuo.jiang
  * @create: 2019-11-20 20:15
  */
-@RestService(name = "platform.operation.MedicalItemService")
-public class MedicalItemService {
+@RestService(name = "platform.operation.MedicalItemsService")
+public class MedicalItemsService {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
     
     @Autowired
-    private MedicalItemManager medicalItemManager;
+    private MedicalItemsManager medicalItemsManager;
 
 
     /* *
@@ -52,14 +52,15 @@ public class MedicalItemService {
             Sorter sorter = AutoEvaluationUtil.genSorter(reqParams);	//排序
             Range range = AutoEvaluationUtil.genRange(reqParams);		//页码
 
-            MedicalItemCondition cn = new MedicalItemCondition();
+            MedicalItemsCondition cn = new MedicalItemsCondition();
             AutoEvaluationUtil.evaluationObject(reqParams, cn);
  
-            PaginationSupport<MedicalItem> pg = medicalItemManager.pageList(cn, range, sorter);
+            PaginationSupport<MedicalItems> pg = medicalItemsManager.pageList(cn, range, sorter);
 
             List<Map<String, Object>> items = new ArrayList<Map<String,Object>>();
-            for(MedicalItem obj : pg.getItems()){
+            for(MedicalItems obj : pg.getItems()){
                 Map<String,Object> item = AutoEvaluationUtil.domainToMap(obj);
+                item.put("itemNames",medicalItemsManager.getItemNames(obj.getId()));
                 item.put("suitableSexName", obj.getSuitableSex().getName());
                 item.put("createTime", DateUtil.formatDateToDateTime(obj.getCreateTime()));
                 items.add(item);
@@ -83,10 +84,10 @@ public class MedicalItemService {
     @ActionMethod(response = "json")
     public Object create(RequestParameters reqParams) {
         try {
-            MedicalItem obj = new MedicalItem();
+            MedicalItems obj = new MedicalItems();
             AutoEvaluationUtil.evaluationObject(reqParams, obj);
             //TODO 校验参数正确性
-            medicalItemManager.create(obj);
+            medicalItemsManager.create(obj);
             return new ServiceResult(ReturnResult.SUCCESS, "添加成功");
         } catch (Exception e) {
             logger.error(e.getMessage());
@@ -105,10 +106,10 @@ public class MedicalItemService {
     public Object update(RequestParameters reqParams) {
         String id = reqParams.getParameter("id", String.class);
         try {
-            MedicalItem obj = new MedicalItem();
+            MedicalItems obj = new MedicalItems();
             AutoEvaluationUtil.evaluationObject(reqParams, obj);
             //TODO 校验参数正确性
-            medicalItemManager.update(obj);
+            medicalItemsManager.update(obj);
             return new ServiceResult(ReturnResult.SUCCESS, "修改成功");
         } catch (Exception e) {
             logger.error(e.getMessage());
@@ -131,9 +132,9 @@ public class MedicalItemService {
             if (StringUtils.isNotBlank(ids)) {
                 String[] id = ids.split(",");
                 for (String s : id) {
-                    MedicalItem obj = medicalItemManager.getObject(s);
+                    MedicalItems obj = medicalItemsManager.getObject(s);
                     if (obj == null) continue;
-                    medicalItemManager.delete(obj.getId());
+                    medicalItemsManager.delete(obj.getId());
                 }
             }
             return new ServiceResult(ReturnResult.SUCCESS, "批量删除成功");

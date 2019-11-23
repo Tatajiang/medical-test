@@ -11,15 +11,14 @@ import javax.persistence.*;
 import java.util.Date;
 
 /**
- * @description: 体检项目
+ * @description: 体检套餐
  * @author: zhantuo.jiang
  * @create: 2019-11-20 19:32
  */
 @Entity
 @Table(name = ProjectConfig.NAME + "_Medical_Item")
 @org.hibernate.annotations.Entity(dynamicInsert = true, dynamicUpdate = true)
-public class MedicalItem implements DomainObject{
-
+public class MedicalItems implements DomainObject{
 
     @Id
     @PrimaryKey
@@ -29,15 +28,14 @@ public class MedicalItem implements DomainObject{
 
     @Column(length = 255)
     @Index(name="Index_Item_Name")
-    private String medicalName; 								// 体检项目名
-
+    private String medicalName; 								// 体检套餐名
 
     @Column(length = 255)
     private String meaning; 								    // 指标意义
 
 
     @Enumerated(EnumType.STRING)
-    private GenderEnum suitableSex = GenderEnum.Both;	        // 合适性别
+    private GenderEnum suitableSex = GenderEnum.Both;	        //合适性别
 
 
     @Column(length = 10)
@@ -47,8 +45,14 @@ public class MedicalItem implements DomainObject{
     @Column(length = 10)
     private Integer ageMax;	                                    //合适年龄（最大）
 
+    @Column(length = 1)
+    private Boolean isShow = false;                             //用于是否展示
+
     @Column
-    private Date createTime = new Date();                        // 创建时间
+    private String showImg;                                     //展示图片（先不限制长度）
+
+    @Column
+    private Date createTime = new Date();                       //创建时间
 
 
     public String getId() {
@@ -105,5 +109,21 @@ public class MedicalItem implements DomainObject{
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public Boolean getShow() {
+        return isShow;
+    }
+
+    public void setShow(Boolean show) {
+        isShow = show;
+    }
+
+    public String getShowImg() {
+        return showImg;
+    }
+
+    public void setShowImg(String showImg) {
+        this.showImg = showImg;
     }
 }

@@ -6,8 +6,9 @@ import com.homolo.framework.dao.util.PaginationSupport;
 import com.homolo.framework.dao.util.Range;
 import com.homolo.framework.dao.util.Sorter;
 import com.jiang.medical.ProjectConfig;
-import com.jiang.medical.platform.operation.condition.MedicalItemCondition;
-import com.jiang.medical.platform.operation.domain.MedicalItem;
+import com.jiang.medical.platform.operation.condition.ItemCondition;
+import com.jiang.medical.platform.operation.domain.Item;
+import com.jiang.medical.platform.operation.domain.Item;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,32 +17,32 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * @description: 体检项目业务逻辑
+ * @description: 项目内容业务逻辑
  * @author: zhantuo.jiang
- * @create: 2019-11-20 20:11
+ * @create: 2019-11-23 13:24
  */
-@DomainEngine(types = MedicalItem.class)
+@DomainEngine(types = Item.class)
 @Transactional(readOnly = false)
-public class MedicalItemManager {
+public class ItemManager {
 
-    @Resource(name = ProjectConfig.PREFIX + "MedicalItemDao")
-    DomainObjectDao<MedicalItem> objDao;
+    @Resource(name = ProjectConfig.PREFIX + "ItemDao")
+    DomainObjectDao<Item> objDao;
 
     @DomainEngine.C
     @Transactional(rollbackFor = Exception.class)
-    public String create(MedicalItem obj){
+    public String create(Item obj){
         return objDao.createObject(obj);
     }
 
     @DomainEngine.U
     @Transactional(rollbackFor = Exception.class)
-    public void update(MedicalItem obj){
+    public void update(Item obj){
         objDao.updateObject(obj);
     }
 
     @DomainEngine.D
     @Transactional(rollbackFor = Exception.class)
-    public void delete(MedicalItem obj){
+    public void delete(Item obj){
         objDao.deleteObject(obj);
     }
 
@@ -52,11 +53,11 @@ public class MedicalItemManager {
     }
 
     @DomainEngine.R
-    public MedicalItem getObject(String id) {
+    public Item getObject(String id) {
         if(StringUtils.isNotBlank(id)){
-            MedicalItem old = objDao.loadObject(id);
+            Item old = objDao.loadObject(id);
             if(null != old){
-                MedicalItem  newObj = new MedicalItem();
+                Item  newObj = new Item();
                 BeanUtils.copyProperties(old, newObj);
                 return newObj;
             }
@@ -64,26 +65,23 @@ public class MedicalItemManager {
         return null;
     }
 
-    public List<MedicalItem> list(MedicalItemCondition condition) {
+    public List<Item> list(ItemCondition condition) {
         return objDao.findAllByCondition(condition);
     }
 
-    public List<MedicalItem> list(MedicalItemCondition condition, Sorter sorter) {
+    public List<Item> list(ItemCondition condition, Sorter sorter) {
         return objDao.findAllByCondition(condition, sorter);
     }
 
-    public List<MedicalItem> list(MedicalItemCondition condition, int size) {
+    public List<Item> list(ItemCondition condition, int size) {
         return objDao.findByCondition(condition, size);
     }
 
-    public List<MedicalItem> listAll() {
+    public List<Item> listAll() {
         return objDao.findAll();
     }
 
-    public PaginationSupport<MedicalItem> pageList(MedicalItemCondition condition, Range range, Sorter sorter) {
+    public PaginationSupport<Item> pageList(ItemCondition condition, Range range, Sorter sorter) {
         return objDao.findByCondition(condition, range, sorter);
     }
-    
 }
-
-

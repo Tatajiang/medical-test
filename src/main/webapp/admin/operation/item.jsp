@@ -6,6 +6,7 @@
     <base href="<%=basePath%>">
     <jsp:include page="../inc/resource.jsp" />
     <script src="<%=path %>/js/jquery-3.3.1.min.js"></script>
+
 </head>
 <body style="background: #f7f7f7;" class="nav-md">
 <div class="container-fluid">
@@ -15,18 +16,8 @@
                 <div class="row">
                     <div class="form-group col-xs-2">
                         <div class="input-group">
-                            <span class="input-group-addon">体检套餐</span>
-                            <input name="medicalName" class="form-control" type="text">
-                        </div>
-                    </div>
-                    <div class="form-group col-xs-2">
-                        <div class="input-group">
-                            <span class="input-group-addon">合适性别</span>
-                            <select name="gender" class="form-control">
-                                <option value="Male">男</option>
-                                <option value="Woman">女</option>
-                                <option value="Both">两者</option>
-                            </select>
+                            <span class="input-group-addon">项目名称</span>
+                            <input name="name" class="form-control" type="text">
                         </div>
                     </div>
                     <div class="form-group col-xs-2.5">
@@ -54,41 +45,21 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header"><button class="close" type="button" onclick="hideEditForm();">x</button>
-                <h4>编辑体检套餐</h4>
+                <h4>编辑体检项目</h4>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" role="form" id="editForm" >
                     <input type="hidden" name="id" />
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">套餐名称：</label>
+                        <label class="col-sm-2 control-label">项目名称：</label>
                         <div class="col-sm-10">
-                            <input type="text" name="medicalName" class="form-control" required data-required="required" data-bv-notempty-message="项目名称不能为空" />
+                            <input type="text" name="name" class="form-control" required data-required="required" data-bv-notempty-message="项目名称不能为空" />
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">合适性别：</label>
+                        <label class="col-sm-2 control-label">项目描述：</label>
                         <div class="col-sm-10">
-                            <select name="suitableSex" class="form-control">
-                                <option value="Male">男</option>
-                                <option value="Woman">女</option>
-                                <option value="Both">两者</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">合适年龄：</label>
-                        <div class="col-sm-4">
-                            <input type="number" name="ageMin" class="form-control" age data-age="age" data-bv-notempty-message="该内容不能为空"/>
-                        </div>
-                        <span class="col-sm-2" style="text-align: center">______</span>
-                        <div class="col-sm-4">
-                            <input type="number" name="ageMax" class="form-control" age data-age="age" data-bv-notempty-message="该内容不能为空" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">指标意义：</label>
-                        <div class="col-sm-10">
-                            <textarea rows="6" class="form-control" name="meaning" style="outline:medium;border-width:1px;" textarea data-textarea="textarea" data-bv-notempty-message="指标意义不能为空" ></textarea>
+                            <textarea rows="6" class="form-control" name="description" style="outline:medium;border-width:1px;" textarea data-textarea="textarea" data-bv-notempty-message="描述信息不能为空" ></textarea>
                         </div>
                     </div>
                 </form>
@@ -103,44 +74,9 @@
 <!--编辑角色模态框end-->
 
 
-<!--上传头像start-->
-<div class="modal fade" id="uploadPicModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header"><button class="close" type="button" onclick="hideEditForm();">x</button>
-                <h4>上传头像</h4>
-            </div>
-            <div class="modal-body">
-                <form class="form-horizontal" role="form" id="uploadPicForm">
-                    <input type="hidden" name="id" />
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">用户头像：</label>
-                        <div class="col-sm-10">
-                            <input id="picId" name="picId" type="file" accept="image/*" />
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="uploadPic();">上传</button>
-                <button type="button" class="btn btn-default" onclick="hideEditForm();">取消</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!--上传头像end-->
-
-
 <jsp:include page="../inc/bottom.jsp" />
 <script src="<%=path %>/js/bootstrap-validator/custom-validator.js"></script>
 <script type="text/javascript">
-
-    var imgPath = '<%=path%>/service/rest/tk.File/';
-
-    $(function(){
-        fishFileInput($("#picId"), "url", ['png','jpg']);
-    })
-
 
     $(document).ready(function(){
 
@@ -171,14 +107,14 @@
             if(row == ""){
                 Modal.alert({message: "请先选择至少一条记录",icon:"fa fa-check"});
             }else{
-                Modal.confirm({ message: "确定要删除吗?(注意：删除该项目后，预约过该项目的用户依旧可以查看该项目信息!)",icon:"fa fa-exclamation-circle"}).on(function (e) {
+                Modal.confirm({ message: "确定要删除吗?(注意：如果删除的项目已分配到套餐中，将会删除套餐中的该项目!)",icon:"fa fa-exclamation-circle"}).on(function (e) {
                     if (e) {
                         var array = new Array(row.length);
                         for(var i = 0;i < row.length; i++){
                             array[i] = row[i].id;
                         }
                         $.ajax({
-                            url:$ctx+ '/service/rest/platform.operation.MedicalItemsService/collection/deletes?ids='+array,
+                            url:$ctx+ '/service/rest/platform.operation.ItemService/collection/deletes?ids='+array,
                             cache:false,		//false是不缓存，true为缓存
                             async:true,			//true为异步，false为同步
                             beforeSend:function(){},
@@ -206,7 +142,7 @@
             toolbar:'#toolbar',
             uniqueId:'id',	// 指定主键列
             method:'post',
-            url: $ctx + '/service/rest/platform.operation.MedicalItemsService/collection/query',
+            url: $ctx + '/service/rest/platform.operation.ItemService/collection/query',
             striped: true,
             pagination: true,
             pageNumber: 1,
@@ -226,18 +162,13 @@
             columns : [
                 {field : 'checked', checkbox : true, visible: true},
                 {field : "id",align:"center",visible:false},
-                {field : "medicalName" ,title : "套餐名称" ,align:"center" ,width : 80},
-                {field : "suitableSexName" ,title : "合适性别" ,align:"center" ,width : 80},
-                {field : "ageMin" ,title : "合适年龄（最小）" ,align:"center" ,width : 80},
-                {field : "ageMax" ,title : "合适年龄（最大）" ,align:"center" ,width : 80},
-                {field : "itemNames" ,title : "指标" ,align:"center" ,width : 80},
-                {field : "meaning" ,title : "指标意义" ,align:"center" ,width : 80},
+                {field : "name" ,title : "项目名称" ,align:"center" ,width : 80},
+                {field : "description" ,title : "项目描述" ,align:"center" ,width : 80},
                 {field : "createTime" ,title : "创建时间" ,align:"center" ,sortable : true ,width : 80},
                 {field : "operate", title : "操作", align:"center",width : 80,
                     formatter: function(value,row,index){
                         var html = '';
                         html += '<a class="btn btn-primary" data-toggle="modal" data-target="#editModal" onclick="update(\''+row.id+'\')">编辑信息</a>';
-                        html += '<a class="btn btn-primary" onclick="items(\''+row.id+'\',\''+row.medicalName+'\')">编辑套餐</a>';
                         return html;
                     }
                 }
@@ -257,7 +188,7 @@
         $('#editForm').loadJson(row);
 
     }
-    
+
     // 保存对象
     function save(){
         //获取表单对象
@@ -269,9 +200,9 @@
                 if(r){
                     var params = $('#editForm').serializeObject();
                     if(!params.id){
-                        var url = $ctx + '/service/rest/platform.operation.MedicalItemsService/collection/create';
+                        var url = $ctx + '/service/rest/platform.operation.ItemService/collection/create';
                     }else{
-                        var url = $ctx + '/service/rest/platform.operation.MedicalItemsService/collection/update';
+                        var url = $ctx + '/service/rest/platform.operation.ItemService/collection/update';
                     }
                     $.postExtend(url, params, function(data){
                         if(data.code == 1){
@@ -286,11 +217,6 @@
                 }
             });
         }
-    }
-
-    function items(id,name) {
-        //打开新的Tab页面
-        addTabs({id: id, title: name+"-详情", url: $ctx + "/admin/operation/relevance.jsp?medicalId="+id , close: true});
     }
 
 
