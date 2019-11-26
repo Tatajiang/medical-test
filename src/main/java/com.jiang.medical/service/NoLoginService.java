@@ -34,6 +34,13 @@ public class NoLoginService {
     private UserManager userManager;
 
 
+    /* *
+     * @Description: 注册
+     * @Param: [reqParams, request]
+     * @return: java.lang.Object
+     * @Author: zhantuo.jiang
+     * @date: 2019/11/26 15:43
+     */
     @ActionMethod(response = "json")
     public Object register(RequestParameters reqParams ,HttpServletRequest request) {
         try {
