@@ -43,6 +43,17 @@ public class Constant {
 	 */
 	public static final String TREE_ROOT_ID = "58cd561b003e477389f09326cdff6d6b";
 
+
+	//SESSION 标识
+	public static final String SESSION_USER_KEY = "_user";
+
+
+	//默认头像
+	public static final String DEFAULT_HEAD = "544b450c42ab411fb46be4a0d7383dd8";
+
+
+
+
 	
 
 }

@@ -2,6 +2,7 @@ package com.jiang.medical.init;
 
 import com.homolo.framework.util.MD5Util;
 import com.jiang.medical.Constant;
+import com.jiang.medical.platform.enums.LevelEnum;
 import com.jiang.medical.platform.system.domain.User;
 import com.jiang.medical.platform.system.manager.UserManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,7 @@ public class UserInit {
 			user = new User();
 			user.setId(id);
 			user.setLoginId("admin");
+			user.setLevle(LevelEnum.Admin);
 			user.setPassword(MD5Util.encryptPassword("888888"));
 			user.setNickname("系统管理员");
 			user.setPhone("15100000000");

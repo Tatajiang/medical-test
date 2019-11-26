@@ -10,19 +10,21 @@ import com.homolo.framework.dao.DomainObjectDao;
 import com.homolo.framework.dao.util.PaginationSupport;
 import com.homolo.framework.dao.util.Range;
 import com.homolo.framework.dao.util.Sorter;
+import com.homolo.framework.util.MD5Util;
+import com.homolo.framework.util.UUID;
+import com.jiang.medical.Constant;
 import com.jiang.medical.ProjectConfig;
+import com.jiang.medical.platform.enums.LevelEnum;
 import com.jiang.medical.platform.system.condition.UserCondition;
 import com.jiang.medical.platform.system.domain.User;
+import com.jiang.medical.util.AutoEvaluationUtil;
 import com.jiang.medical.util.DateUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /** 
@@ -120,8 +122,6 @@ public class UserManager {
 	 * @param obj
 	 * @return 
 	 * @return Map<String,Object>  
-	 * @author yuanguo.huang
-	 * @date 2018-10-19 上午9:52:02
 	 */
 	public Map<String,Object> userToMap(User obj){
 		Map<String,Object> item= new HashMap<String,Object> ();
@@ -147,9 +147,7 @@ public class UserManager {
 	 * @param userId
 	 * @return 
 	 * @return String  
-	 * @author leijing
-	 * @date 2018年10月23日 下午4:25:12 
-	 */ 
+	 */
 	public String getNameById(String userId) {
 		User obj = getObject(userId);
 		return obj == null ? "" : StringUtils.defaultString(obj.getNickname(), "");
@@ -161,8 +159,6 @@ public class UserManager {
 	 * @param cn
 	 * @return 
 	 * @return List<String>  
-	 * @author yuanguo.huang
-	 * @date 2018-10-31 下午3:28:33
 	 */
 	public List<String> getListByCondition(UserCondition cn){
 		List<User> listUser = objDao.findAllByCondition(cn);
@@ -171,5 +167,89 @@ public class UserManager {
 			list.add((String)id);
 		}
 		return list;
+	}
+
+	/* *
+	 * @Description: 注册
+	 * @Param: [sessionId, password, phone, code, mac, topBizUserId]
+	 * @return: com.jiang.medical.platform.system.domain.User
+	 * @Author: zhantuo.jiang
+	 * @date: 2019/11/26 14:20
+	 */
+	@DomainEngine.C
+	@Transactional(rollbackFor = Exception.class)
+	public User register(String sessionId,String phone,String password,User.Gender gender) throws Exception{
+		//创建会员信息
+		User obj = new User();
+		obj.setId(UUID.generateUUID());
+		obj.setPhone(phone);
+		obj.setLoginId(phone);
+		obj.setGender(gender);
+		obj.setJsessionid(sessionId);
+		obj.setNickname("用户_"+StringUtils.substring(phone,7,11));
+		//使用MD5加密密码
+		obj.setPassword(MD5Util.encryptPassword(password));
+		obj.setPictrueId(Constant.DEFAULT_HEAD);
+		//设置用户级别
+		obj.setLevle(LevelEnum.User);
+
+		//TODO:是否添加默认的身份证号码等信息
+
+		this.create(obj);
+		return obj;
+	}
+
+	/* *
+	 * @Description: 通过JSeesionId获取用户对象
+	 * @Param: [jsessionid]
+	 * @return: com.jiang.medical.platform.system.domain.User
+	 * @Author: zhantuo.jiang
+	 * @date: 2019/11/26 14:10
+	 */
+	public User getObjectBySessionId(String jsessionid){
+		if(StringUtils.isBlank(jsessionid)){
+			return null;
+		}
+		UserCondition condition = new UserCondition();
+		condition.setJsessionid(jsessionid);
+		List<User> list = this.list(condition);
+		return list.isEmpty() ? null : list.get(0);
+	}
+
+	/* *
+	 * @Description: 通过电话号码获取用户对象
+	 * @Param: [mobile]
+	 * @return: com.jiang.medical.platform.system.domain.User
+	 * @Author: zhantuo.jiang
+	 * @date: 2019/11/26 14:19
+	 */
+	public User getObjectByMobile(String mobile){
+		if(StringUtils.isBlank(mobile)){
+			return null;
+		}
+		UserCondition condition = new UserCondition();
+		condition.setPhone(mobile);
+		List<User> list = this.list(condition, 1);
+		return list.isEmpty() ? null : list.get(0);
+	}
+
+
+	/* *
+	 * @Description: 封装可返回会员信息
+	 * @Param: [obj]
+	 * @return: java.util.Map<java.lang.String,java.lang.Object>
+	 * @Author: zhantuo.jiang
+	 * @date: 2019/11/26 14:33
+	 */
+	public Map<String, Object> packUserInfo(User obj){
+		Map<String, Object> result = new HashMap<>();
+		result.put("loginId",obj.getLoginId());
+		result.put("pictrueId",obj.getPictrueId());
+		result.put("nickname",obj.getNickname());
+		result.put("gender",obj.getGender());
+		result.put("card",obj.getCard());
+		result.put("phone",obj.getPhone());
+		result.put("jsessionid",obj.getJsessionid());
+		return result;
 	}
 }

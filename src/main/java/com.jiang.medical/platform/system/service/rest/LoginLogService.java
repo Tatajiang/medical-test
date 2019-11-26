@@ -60,10 +60,8 @@ public class LoginLogService {
 				}
 				cn.setUserIds(userIds);
 			}
-			
-			
-			
-			
+
+
 			PaginationSupport<LoginLog> pg = loginLogManager.pageList(cn, range, sorter);
 			
 			List<Map<String, Object>> items = new ArrayList<Map<String,Object>>();

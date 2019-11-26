@@ -10,6 +10,7 @@ package com.jiang.medical.platform.system.domain;
 import com.homolo.framework.annotation.PrimaryKey;
 import com.homolo.framework.bean.DomainObject;
 import com.jiang.medical.ProjectConfig;
+import com.jiang.medical.platform.enums.LevelEnum;
 import org.hibernate.annotations.Index;
 
 import javax.persistence.*;
@@ -40,35 +41,47 @@ public class User implements DomainObject {
 	
 	@Column
 	@Index(name="Index_user_loginId")
-	private String loginId; 									// 登入用户名
+	private String loginId; 									//登入用户名
 	
 	@Column
-	private String password; 									// 登入密码
+	private String password; 									//登入密码
 	
 	@Column
-	private String nickname; 									// 昵称
+	private String nickname; 									//昵称
 	
 	@Column(length = 32)
-	private String pictrueId;									// 用户头像Id
+	private String pictrueId;									//用户头像Id
+
+	@Column(length = 255)
+	private String card;										//身份证号码
 	
 	@Column
 	@Enumerated(value = EnumType.STRING)
-	private Gender gender = Gender.Male; 						// 性别
+	private Gender gender = Gender.Male; 						//性别
 
 	@Column
-	private Date createTime = new Date();						// 创建时间
+	@Enumerated(value = EnumType.STRING)
+	private LevelEnum levle = LevelEnum.User;					//用户级别
+
+	@Column
+	private Date createTime = new Date();						//创建时间
 	
 	@Column
 	@Index(name="Index_user_phone")
-	private String phone; 										// 电话
-	
-	private String roleIds;										// 所拥有的角色id集合
-	
-	private Boolean isDelete = false;                           // 是否删除  true为删除，false未删除
+	private String phone; 										//电话
+
+
+	@Column(length = 32)
+	@Index(name = "Index_user_jsessionid")
+	private String jsessionid;									//sessionId（用户登录内容）
+
+	private String roleIds;										//所拥有的角色id集合
+
+	private Boolean isDelete = false;                           //是否删除  true为删除，false未删除
 
 	public static enum Gender {
-		Male ("男"), 									 	// 男
-		FeMale("女");									 	// 女
+		Male ("男"), 									 	//男
+		FeMale("女");									 	//女
 
 		private String name;
 		private Gender(String name) {
@@ -168,5 +181,28 @@ public class User implements DomainObject {
 	public void setIsDelete(Boolean isDelete) {
 		this.isDelete = isDelete;
 	}
-	
+
+	public String getCard() {
+		return card;
+	}
+
+	public void setCard(String card) {
+		this.card = card;
+	}
+
+	public LevelEnum getLevle() {
+		return levle;
+	}
+
+	public void setLevle(LevelEnum levle) {
+		this.levle = levle;
+	}
+
+	public String getJsessionid() {
+		return jsessionid;
+	}
+
+	public void setJsessionid(String jsessionid) {
+		this.jsessionid = jsessionid;
+	}
 }

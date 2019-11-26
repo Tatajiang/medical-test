@@ -1,10 +1,3 @@
-/** 
- * @Package com.yunmeng.admin.user.service.rest 
- * @Description 
- * @author yuanguo.huang
- * @date 2018-10-17 上午10:38:07 
- * @version V1.0 
- */ 
 package com.jiang.medical.platform.system.service.rest;
 
 import com.homolo.framework.bean.DomainObject;
@@ -14,6 +7,7 @@ import com.homolo.framework.dao.util.Sorter;
 import com.homolo.framework.rest.*;
 import com.homolo.framework.service.ServiceResult;
 import com.homolo.framework.util.MD5Util;
+import com.jiang.medical.platform.enums.LevelEnum;
 import com.jiang.medical.platform.system.condition.UserCondition;
 import com.jiang.medical.platform.system.domain.LoginLog;
 import com.jiang.medical.platform.system.domain.SysRoles;
@@ -74,6 +68,8 @@ public class UserService extends BaseDomainObjectServiceSupport<DomainObject> {
 			AutoEvaluationUtil.evaluationObject(reqParams, cn);
 			
 			PaginationSupport<User> pg = userManager.pageList(cn, range, sorter);
+			//查询所有管理员
+			cn.setLevle(LevelEnum.Admin);
 			
 			List<Map<String, Object>> items = new ArrayList<Map<String,Object>>();
 			for(User obj : pg.getItems()){
@@ -296,6 +292,11 @@ public class UserService extends BaseDomainObjectServiceSupport<DomainObject> {
 				map.put("error",error);
 				return map;
 			}
+			if (user.getLevle() != LevelEnum.Admin) {
+				error = "该账号不具备登录该页面权限！";
+				map.put("error",error);
+				return map;
+			}
 			
 			if(StringUtils.isNotBlank(service) && !StringUtils.endsWith(service, "/admin/login.jsp")){
 				map.put("service", service);
@@ -303,13 +304,16 @@ public class UserService extends BaseDomainObjectServiceSupport<DomainObject> {
 				map.put("service", request.getContextPath() + "/admin/index.jsp");
 			}
 			request.getSession().setAttribute("_user", user);
-			
-			//开始创建登录日志
-			LoginLog log = new LoginLog();
-			log.setUserId(user.getId());
-			log.setIp(SessionUtil.getRemoteIP(request));
-			loginLogManager.create(log);
-			
+
+			//如果是管理员才创建记录
+			if (user.getLevle() == LevelEnum.Admin) {
+				//开始创建登录日志
+				LoginLog log = new LoginLog();
+				log.setUserId(user.getId());
+				log.setIp(SessionUtil.getRemoteIP(request));
+				loginLogManager.create(log);
+			}
+
 			return map;
 		}catch (Exception e) {
 			Map<String,String> map = new HashMap<String, String>();

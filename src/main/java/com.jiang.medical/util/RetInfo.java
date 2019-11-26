@@ -48,6 +48,9 @@ public class RetInfo {
 	public static final Integer SUCCESS = 0;
 	
 	public static final Integer NOLOGIN = 1;
+
+	//重新登录（Session过期）
+	public static final Integer AGAINLOGIN = 7;
 	
 	/** 
 	 * @return code
