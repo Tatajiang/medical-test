@@ -143,5 +143,32 @@ public class MedicalItemsService {
         }
     }
 
+    /* *
+     * @Description: 上传套餐头像
+     * @Param: [reqParams, request]
+     * @return: java.lang.Object
+     * @Author: zhantuo.jiang
+     * @date: 2019/11/30 12:26
+     */
+    @ActionMethod(response = "json")
+    public Object uploadHeadImg(RequestParameters reqParams,HttpServletRequest request) {
+        try {
+            String id = reqParams.getParameter("id", String.class);
+            String showImg = reqParams.getParameter("showImg", String.class);
+            if (StringUtils.isBlank(id) || StringUtils.isBlank(showImg) ) {
+                return new ServiceResult(ReturnResult.FAILURE, "上传失败！");
+            }
+            MedicalItems obj = medicalItemsManager.getObject(id);
+            if (obj == null){
+                return new ServiceResult(ReturnResult.FAILURE, "上传失败！");
+            }
+            obj.setShowImg(showImg);
+            medicalItemsManager.update(obj);
+            return new ServiceResult(ReturnResult.SUCCESS, "上传成功！");
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return new ServiceResult(ReturnResult.FAILURE, e.getMessage());
+        }
+    }
 
 }

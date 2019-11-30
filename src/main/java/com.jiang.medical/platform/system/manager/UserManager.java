@@ -191,7 +191,7 @@ public class UserManager {
 		obj.setPassword(MD5Util.encryptPassword(password));
 		obj.setPictrueId(Constant.DEFAULT_HEAD);
 		//设置角色信息
-		obj.setRoleIds(Constant.SYSTEMCONSTANT_USER_ROLE_ID);
+		//obj.setRoleIds(Constant.SYSTEMCONSTANT_USER_ROLE_ID);
 		//设置用户级别
 		obj.setLevle(LevelEnum.User);
 

@@ -196,9 +196,6 @@ public class MemusInit {
 		//初始化平台超级管理员角色
 		initRole(Constant.SYSTEMCONSTANT_ADMIN_ROLE_ID, "系统管理员", "系统管理员");
 
-		//初始化平台普通用户
-		initRole(Constant.SYSTEMCONSTANT_USER_ROLE_ID, "普通用户", "普通用户");
-
 		//初始化平台超级管理员角色_资源关联
 		for(int i = 0 ; i < listOperation.size(); i++) {
 			String oid = listOperation.get(i);

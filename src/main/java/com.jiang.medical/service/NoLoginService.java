@@ -1,13 +1,21 @@
 package com.jiang.medical.service;
 
+import com.homolo.framework.dao.util.PaginationSupport;
+import com.homolo.framework.dao.util.Range;
+import com.homolo.framework.dao.util.Sorter;
 import com.homolo.framework.rest.ActionMethod;
 import com.homolo.framework.rest.RequestParameters;
 import com.homolo.framework.rest.RestService;
 import com.homolo.framework.util.MD5Util;
 import com.jiang.medical.Constant;
+import com.jiang.medical.platform.operation.condition.MedicalItemsCondition;
+import com.jiang.medical.platform.operation.domain.MedicalItems;
+import com.jiang.medical.platform.operation.manager.ItemManager;
+import com.jiang.medical.platform.operation.manager.MedicalItemsManager;
 import com.jiang.medical.platform.system.domain.User;
 import com.jiang.medical.platform.system.manager.UserManager;
 import com.jiang.medical.util.AutoEvaluationUtil;
+import com.jiang.medical.util.DateUtil;
 import com.jiang.medical.util.JsonUtil;
 import com.jiang.medical.util.RetInfo;
 import com.jiang.medical.util.StringUtil;
@@ -17,8 +25,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @description: 未登录时拥有得接口
@@ -33,6 +40,11 @@ public class NoLoginService {
     @Autowired
     private UserManager userManager;
 
+    @Autowired
+    private MedicalItemsManager medicalItemsManager;
+
+    @Autowired
+    private ItemManager itemManager;
 
     /* *
      * @Description: 注册
@@ -119,4 +131,42 @@ public class NoLoginService {
             return new RetInfo(RetInfo.FAILURE, e.getMessage());
         }
     }
+
+
+    /* *
+     * @Description: 获取所有套餐信息
+     * @Param: [request, reqParams]
+     * @return: java.lang.Object
+     * @Author: zhantuo.jiang
+     * @date: 2019/11/30 12:41
+     */
+    @ActionMethod(response = "json")
+    public Object getAllMedicalItems(HttpServletRequest request, RequestParameters reqParams) {
+        try {
+            Sorter sorter = AutoEvaluationUtil.genSorter(reqParams); 					// 排序
+            Range range = AutoEvaluationUtil.genRange(reqParams); 						// 页码
+
+            List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+
+            //分页查询
+            MedicalItemsCondition condition = new MedicalItemsCondition();
+            condition.setShow(true);
+            PaginationSupport<MedicalItems> ps = medicalItemsManager.pageList(condition,range,sorter.asc("createTime"));
+            for (MedicalItems obj : ps.getItems()) {
+                Map<String, Object> list = AutoEvaluationUtil.domainToMap(obj);
+                list.put("createTime", DateUtil.formatDateToDateTime(obj.getCreateTime()));
+                list.put("items",medicalItemsManager.getItemNames(obj.getId()));
+                list.put("suitableSex",obj.getSuitableSex().getName());
+                result.add(list);
+            }
+
+            return new RetInfo(RetInfo.SUCCESS,"获取体检套餐信息成功", JsonUtil.getJsonStrFromEntity(result),
+                    ps.getCurrentPageNo(), ps.getTotalPage(), ps.getPageSize(),  ps.getTotalCount());
+        }catch (Exception e) {
+            logger.error(e.getMessage());
+            return new RetInfo(RetInfo.FAILURE, e.getMessage());
+        }
+    } 
+    
+    
 }

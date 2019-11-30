@@ -94,6 +94,13 @@ public class MedicalItemsManager {
     }
 
 
+    /* *
+     * @Description: 获取套餐所有指标信息
+     * @Param: [medicalId]
+     * @return: java.lang.String
+     * @Author: zhantuo.jiang
+     * @date: 2019/11/30 12:47
+     */
     public String getItemNames(String medicalId){
         StringBuffer itemNames = new StringBuffer("");
         RelevanceCondition rCondition = new RelevanceCondition();

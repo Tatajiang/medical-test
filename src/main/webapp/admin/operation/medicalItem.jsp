@@ -6,6 +6,17 @@
     <base href="<%=basePath%>">
     <jsp:include page="../inc/resource.jsp" />
     <script src="<%=path %>/js/jquery-3.3.1.min.js"></script>
+
+    <style type="text/css">
+        #setOperationForm ul{list-style: none;}
+        #setOperationForm ul li{float: left;margin: 10px;}
+
+        .formatterPic {
+            width: 200px;
+            height: 150px;
+            align-content: center!important;
+        }
+    </style>
 </head>
 <body style="background: #f7f7f7;" class="nav-md">
 <div class="container-fluid">
@@ -108,19 +119,19 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header"><button class="close" type="button" onclick="hideEditForm();">x</button>
-                <h4>上传头像</h4>
+                <h4>上传套餐图片</h4>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" role="form" id="uploadPicForm">
-                    <input type="hidden" name="id" />
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">用户头像：</label>
-                        <div class="col-sm-10">
-                            <input id="picId" name="picId" type="file" accept="image/*" />
-                        </div>
+            <form class="form-horizontal" role="form" id="uploadPicForm">
+                <input type="hidden" name="id" />
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">套餐图片：</label>
+                    <div class="col-sm-10">
+                        <input id="showImg" name="showImg" type="file" accept="image/*" />
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
+        </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" onclick="uploadPic();">上传</button>
                 <button type="button" class="btn btn-default" onclick="hideEditForm();">取消</button>
@@ -138,7 +149,7 @@
     var imgPath = '<%=path%>/service/rest/tk.File/';
 
     $(function(){
-        fishFileInput($("#picId"), "url", ['png','jpg']);
+        fishFileInput($("#showImg"), "url", ['png','jpg']);
     })
 
 
@@ -227,6 +238,14 @@
                 {field : 'checked', checkbox : true, visible: true},
                 {field : "id",align:"center",visible:false},
                 {field : "medicalName" ,title : "套餐名称" ,align:"center" ,width : 80},
+                {field : "showImg",title : "套餐图片", align:"center" ,width : 200,height :150
+                    ,formatter:function(value,row,index){
+                        if (!value) {
+                            return '暂未上传';
+                        } else {
+                            return '<img  class="formatterPic" src="'+ imgPath + value + '"/>';
+                        }
+                    }},
                 {field : "suitableSexName" ,title : "合适性别" ,align:"center" ,width : 80},
                 {field : "ageMin" ,title : "合适年龄（最小）" ,align:"center" ,width : 80},
                 {field : "ageMax" ,title : "合适年龄（最大）" ,align:"center" ,width : 80},
@@ -236,6 +255,7 @@
                 {field : "operate", title : "操作", align:"center",width : 80,
                     formatter: function(value,row,index){
                         var html = '';
+                        html += '<button type="button" class="btn btn-success"  onclick="uploadPicView(\''+row.id+'\')" >上传头像</button>'
                         html += '<a class="btn btn-primary" data-toggle="modal" data-target="#editModal" onclick="update(\''+row.id+'\')">编辑信息</a>';
                         html += '<a class="btn btn-primary" onclick="items(\''+row.id+'\',\''+row.medicalName+'\')">编辑套餐</a>';
                         return html;
@@ -294,10 +314,70 @@
     }
 
 
+    //上传职员头像（唤起弹出层）
+    function uploadPicView(id){
+        showModal("uploadPicModal");
+        debugger;
+        var row = $('#dataList').bootstrapTable('getRowByUniqueId', id);
+        // 清空div内容并设置背景图
+        $(".file-drop-zone-title").html('');
+        $(".file-drop-zone-title").css("cssText","background-image:url('"+imgPath+row.showImg+"')!important");
+        $(".file-drop-zone-title").css("background-size","100% 100%");
+        row.showImg = "";
+        $('#uploadPicForm').loadJson(row);
+    }
+
+
+    //上传职员头像
+    function uploadPic(){
+        var params = $('#uploadPicForm').serializeObject();
+        var formData = new FormData($("#uploadPicForm")[0]);
+        $.ajax({
+            type:'post',
+            url:$ctx + '/admin/upload_json.jsp?dir=image',
+            data:formData,
+            dataType:'json',
+            processData:false,
+            contentType:false,
+            cache: false,
+            beforeSend:function(){},
+            success:function(data){
+                var result = JSON.parse(data.data);
+                if(data.code == "0"){
+                    var upPicParams= {id:params.id,showImg:result.fileId};
+                    //保存
+                    $.postExtend($ctx + '/service/rest/platform.operation.MedicalItemsService/collection/uploadHeadImg', upPicParams, function(data){
+                        if(data.code == 1){
+                            Modal.alert({message: data.description, icon:'fa fa-times'}).on(function(){
+                                hideEditForm();
+                                $('#dataList').bootstrapTable('refresh');
+                            });
+                        }else{
+                            Modal.alert({message: data.description, icon:'fa fa-error'});
+                        }
+                    });
+                }else{
+                    Modal.alert({message: data.message, icon:'fa fa-error'});
+                }
+            },
+            complete:function(){},
+            error:function(){
+                Modal.alert({message: "请求失败",icon:"fa fa-times"});
+            }
+        })
+
+    }
+
+
     function hideEditForm(){
         hideModal('editModal');
         $('#editForm')[0].reset();
         $("#editForm").data('bootstrapValidator').resetForm();//清除当前验证的关键之处
+
+        //隐藏用户上传头像弹出层
+        hideModal('uploadPicModal');
+        $('#uploadPicForm')[0].reset();
+        $('#uploadPicForm').clearForm();
     }
 
     function showModal(id){
