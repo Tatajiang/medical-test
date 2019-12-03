@@ -112,8 +112,6 @@ public class NoLoginService {
                 return new RetInfo(RetInfo.FAILURE, "用户名错误！");
             }
 
-            System.out.println(MD5Util.encryptPassword(password));
-            System.out.println(obj.getPassword());
             //判断密码信息
             if (!MD5Util.encryptPassword(password).equals(obj.getPassword())) {
                 return new RetInfo(RetInfo.FAILURE, "密码错误！");

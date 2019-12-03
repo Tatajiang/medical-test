@@ -5,7 +5,6 @@
 <head>
 	<base href="<%=basePath%>">
 	<jsp:include page="../inc/resource.jsp" />
-	<script src="<%=path %>/js/jquery-3.3.1.min.js"></script>
 </head>
 <body style="background: #f7f7f7;" class="nav-md">
 	<div class="container-fluid">
@@ -44,7 +43,6 @@
 		</div>
 	</div>
 	<jsp:include page="../inc/bottom.jsp" />
-	
 	<script type="text/javascript">
 		
 		var referchDeptTree = function () {

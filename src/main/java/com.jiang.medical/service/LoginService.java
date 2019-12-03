@@ -5,6 +5,10 @@ import com.homolo.framework.rest.RequestParameters;
 import com.homolo.framework.rest.RestService;
 import com.homolo.framework.util.MD5Util;
 import com.jiang.medical.Constant;
+import com.jiang.medical.platform.operation.domain.MedicalItems;
+import com.jiang.medical.platform.operation.domain.ReservationRecord;
+import com.jiang.medical.platform.operation.manager.MedicalItemsManager;
+import com.jiang.medical.platform.operation.manager.ReservationRecordManager;
 import com.jiang.medical.platform.system.domain.User;
 import com.jiang.medical.platform.system.manager.UserManager;
 import com.jiang.medical.util.RetInfo;
@@ -30,6 +34,12 @@ public class LoginService {
 
     @Autowired
     private UserManager userManager;
+
+    @Autowired
+    private ReservationRecordManager reservationRecordManager;
+
+    @Autowired
+    private MedicalItemsManager medicalItemsManager;
 
 
     /* *
@@ -121,4 +131,42 @@ public class LoginService {
         }
         return sessionUser;
     }
+
+    /* *
+     * @Description: 创建预约记录
+     * @Param: [reqParams, request]
+     * @return: java.lang.Object
+     * @Author: zhantuo.jiang
+     * @date: 2019/12/3 21:01
+     */
+    @ActionMethod(response = "json")
+    public Object createReservationRecord(RequestParameters reqParams, HttpServletRequest request) {
+        try {
+            User user = getUserBySessionId(reqParams, request);
+            if (user == null) {
+                return new RetInfo(RetInfo.FAILURE, "请先进行登录！");
+            }
+            String medicalId = reqParams.getParameter("medicalId", String.class); // 套餐id
+            Date reservationTime = reqParams.getParameter("reservationTime", Date.class); // 套餐id
+
+            if (StringUtils.isBlank(medicalId) || null == reservationTime) {
+                return new RetInfo(RetInfo.FAILURE, "参数错误");
+            }
+            MedicalItems medicalObj = medicalItemsManager.getObject(medicalId);
+            if (null == medicalObj){
+                return new RetInfo(RetInfo.FAILURE, "所预约的套餐出现错误");
+            }
+            ReservationRecord obj = new ReservationRecord();
+            obj.setUserId(user.getId());
+            obj.setMedicalId(medicalId);
+            obj.setReservationTime(reservationTime);
+            reservationRecordManager.create(obj);
+            return new RetInfo(RetInfo.SUCCESS, "预约成功！");
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return new RetInfo(RetInfo.FAILURE, e.getLocalizedMessage());
+        }
+    }
+
+
 }

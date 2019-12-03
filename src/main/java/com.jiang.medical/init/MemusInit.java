@@ -168,6 +168,25 @@ public class MemusInit {
 			initMemu(id , "项目管理", parentId, "项目管理", intShowIndex, "/admin/operation/item.jsp", "项目管理", 2, false, "");
 		}
 
+		parentId = "29583e90b89840c0ab5485cf8ff8fff2";
+		id = parentId;
+		intShowIndex += 5;
+		obj = operationManager.getObject(id);
+		//如果是超级管理员权限 则增加到list
+		listOperation.add(id);
+		if(obj == null) {
+			initMemu(id , "预约管理", Constant.TREE_ROOT_ID, "预约管理", intShowIndex, null, "预约管理", 1, false, "fa fa-car");
+		}
+
+		intShowIndex+=5;
+		id="d2615296683611e9939fb025aa1bga68";
+		obj = operationManager.getObject(id);
+		//如果是超级管理员权限 则增加到list
+		listOperation.add(id);
+		if(obj == null) {
+			initMemu(id , "预约记录", parentId, "预约记录", intShowIndex, "/admin/operation/reservationRecord.jsp", "预约记录", 2, false, "");
+		}
+
 		
 		//首页图表统计
 		listOperation.add(Constant.HOME_CHARTS_ID);

@@ -6,7 +6,6 @@
 <head>
 	<base href="<%=basePath%>">
 	<jsp:include page="../inc/resource.jsp" />
-	<script src="<%=path %>/js/jquery-3.3.1.min.js"></script>
 	<style type="text/css">
 	#setOperationForm ul{list-style: none;}
 	#setOperationForm ul li{float: left;margin: 10px;}
@@ -18,13 +17,13 @@
 			<form role="form"  id="searchRolesForm" >
 				<div class="container">
 		            <div class="row">
-		           		<div class="form-group col-xs-3">
+		           		<div class="form-group col-xs-2">
 		                    <div class="input-group">
 		                        <span class="input-group-addon">角色名称</span>
 		                        <input id="name" name="name" class="form-control" type="text">
 		                    </div>
 		                </div>
-		                <div class="form-group col-xs-3">
+		                <div class="form-group col-xs-2">
 		                    <div class="input-group">
 		                        <span class="input-group-addon">级别</span>
 		                        <select name="level" class="form-control">
@@ -161,8 +160,6 @@
 	<!--设置权限end-->
 	
 	<jsp:include page="../inc/bottom.jsp" />
-	<script src="<%=path %>/js/bootstrap-validator/custom-validator.js"></script>
-	
 	<script type="text/javascript">
 		$(document).ready(function(){
 			//搜索按钮

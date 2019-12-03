@@ -8,6 +8,7 @@ import com.homolo.framework.module.ModuleConfig;
 import com.jiang.medical.platform.operation.domain.Item;
 import com.jiang.medical.platform.operation.domain.MedicalItems;
 import com.jiang.medical.platform.operation.domain.Relevance;
+import com.jiang.medical.platform.operation.domain.ReservationRecord;
 import com.jiang.medical.platform.system.domain.LoginLog;
 import com.jiang.medical.platform.system.domain.Operation;
 import com.jiang.medical.platform.system.domain.SysRoleOperation;
@@ -84,8 +85,27 @@ public class ProjectConfig {
 		return new BaseHibernateDaoSupport<Item>(Item.class);
 	}
 
+	/* *
+	 * @Description: 关联表
+	 * @Param: []
+	 * @return: com.homolo.framework.dao.DomainObjectDao<com.jiang.medical.platform.operation.domain.Relevance>
+	 * @Author: zhantuo.jiang
+	 * @date: 2019/12/3 14:14
+	 */
 	@Bean(name = PREFIX + "RelevanceDao")
 	public DomainObjectDao<Relevance> generateRelevanceDao() {
 		return new BaseHibernateDaoSupport<Relevance>(Relevance.class);
+	}
+
+	/* *
+	 * @Description: 预约记录
+	 * @Param: []
+	 * @return: com.homolo.framework.dao.DomainObjectDao<com.jiang.medical.platform.operation.domain.ReservationRecord>
+	 * @Author: zhantuo.jiang
+	 * @date: 2019/12/3 14:17
+	 */
+	@Bean(name = PREFIX + "ReservationRecordDao")
+	public DomainObjectDao<ReservationRecord> generateReservationRecordDao() {
+		return new BaseHibernateDaoSupport<ReservationRecord>(ReservationRecord.class);
 	}
 }

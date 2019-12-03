@@ -5,8 +5,6 @@
 <head>
     <base href="<%=basePath%>">
     <jsp:include page="../inc/resource.jsp" />
-    <script src="<%=path %>/js/jquery-3.3.1.min.js"></script>
-
     <style type="text/css">
         #setOperationForm ul{list-style: none;}
         #setOperationForm ul li{float: left;margin: 10px;}
@@ -143,7 +141,6 @@
 
 
 <jsp:include page="../inc/bottom.jsp" />
-<script src="<%=path %>/js/bootstrap-validator/custom-validator.js"></script>
 <script type="text/javascript">
 
     var imgPath = '<%=path%>/service/rest/tk.File/';

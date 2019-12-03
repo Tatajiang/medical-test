@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="defines.jsp" %>
+<%--使用jquery--%>
+<script src="<%=path %>/js/jquery-3.3.1.min.js"></script>
 <!-- 继承jquery的工具方法 -->
 <script src="<%=path %>/js/util.js"></script>
 <!-- JS - bootstrap -->
@@ -12,13 +14,14 @@
 <script src="<%=path %>/js/bootstrap-modal/modal.js"></script>
 <!-- 表单验证 -->
 <script src="<%=path %>/js/bootstrap-validator/bootstrapValidator.js"></script>
+<script src="<%=path %>/js/bootstrap-validator/custom-validator.js"></script>
 <script src="<%=path %>/js/bootstrap-validator/zh_CN.js"></script>
 <!-- TABLE -->
 <script src="<%=path %>/js/bootstrap-table/bootstrap-table.js"></script>
 <!-- 日期控件 -->
 <script src="<%=path %>/js/bootstrap-datetimepicker/moment.js"></script>
-<script src="<%=path %>/js/bootstrap-datetimepicker/zh-cn.js"></script>
 <script src="<%=path %>/js/bootstrap-datetimepicker/bootstrap-datetimepicker.js"></script>
+<script src="<%=path %>/js/bootstrap-datetimepicker/zh-cn.js"></script>
 <!-- 树形控件 -->
 <script src="<%=path %>/js/bootstrap-treeview/bootstrap-treeview.js"></script>
 <!-- 文件上传 -->
