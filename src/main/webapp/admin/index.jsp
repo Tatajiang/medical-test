@@ -7,7 +7,6 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
 	<script src="<%=path %>/js/jquery-3.3.1.min.js"></script>
-	<script src="<%=path %>/js/bootstrap/js/bootstrap.js"></script>
 	<jsp:include page="./inc/resource.jsp" />
 
 	<style type="text/css">

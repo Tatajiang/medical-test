@@ -13,8 +13,8 @@
 						<i class="fa fa-snapchat" style="padding-right: 5px;line-height: 5px;font-size: 20px;vertical-align: middle;"></i><span class=" fa fa-angle-down" style="margin-left: 10px;"></span>
 					</a>
 					<ul class="dropdown-menu dropdown-usermenu pull-right">
-						<li><a href="javascript:void(0);"  data-toggle="modal" data-target="#changePasswordModal"><i class="fa fa-key pull-right"></i>修改密码</a></li>
-						<li><a href="javascript:void(0);" onclick="Modal.confirm({ message: '确定退出？',icon:'fa fa-exclamation-circle'}).on(function(r){if(r){window.location.href = $ctx + '/Logout';}});"><i class="fa fa-sign-out pull-right"></i> 安全退出</a></li>
+						<li><a  data-toggle="modal" data-target="#changePasswordModal"><i class="fa fa-key pull-right"></i>修改密码</a></li>
+						<li><a  onclick="Modal.confirm({ message: '确定退出？',icon:'fa fa-exclamation-circle'}).on(function(r){if(r){window.location.href = $ctx + '/Logout';}});"><i class="fa fa-sign-out pull-right"></i> 安全退出</a></li>
 					</ul>
 				</li>
 			</ul>

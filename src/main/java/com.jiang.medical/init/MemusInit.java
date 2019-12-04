@@ -146,7 +146,7 @@ public class MemusInit {
 		//如果是超级管理员权限 则增加到list
 		listOperation.add(id);
 		if(obj == null) {
-			initMemu(id , "体检管理", Constant.TREE_ROOT_ID, "体检管理", intShowIndex, null, "体检管理", 1, false, "fa fa-car");
+			initMemu(id , "体检管理", Constant.TREE_ROOT_ID, "体检管理", intShowIndex, null, "体检管理", 1, false, "fa fa-plus-square");
 		}
 
 
@@ -175,7 +175,7 @@ public class MemusInit {
 		//如果是超级管理员权限 则增加到list
 		listOperation.add(id);
 		if(obj == null) {
-			initMemu(id , "预约管理", Constant.TREE_ROOT_ID, "预约管理", intShowIndex, null, "预约管理", 1, false, "fa fa-car");
+			initMemu(id , "预约管理", Constant.TREE_ROOT_ID, "预约管理", intShowIndex, null, "预约管理", 1, false, "fa fa-heartbeat");
 		}
 
 		intShowIndex+=5;
