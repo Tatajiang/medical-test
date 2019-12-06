@@ -248,7 +248,7 @@ public class UserManager {
 		result.put("loginId",obj.getLoginId());
 		result.put("pictrueId",obj.getPictrueId());
 		result.put("nickname",obj.getNickname());
-		result.put("gender",obj.getGender());
+		result.put("gender",obj.getGender().getName());
 		result.put("card",obj.getCard());
 		result.put("phone",obj.getPhone());
 		result.put("jsessionid",obj.getJsessionid());

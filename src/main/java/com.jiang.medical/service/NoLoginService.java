@@ -67,7 +67,7 @@ public class NoLoginService {
                 return new RetInfo(RetInfo.FAILURE, "密码不能为空!");
             }
             if (!StringUtil.isLetterDigit(password)) {
-                return new RetInfo(RetInfo.FAILURE, "密码至少包含字母及数字且在6-12位");
+                return new RetInfo(RetInfo.FAILURE, "密码至少包含字母及数字且在6-11位");
             }
             User user = userManager.getObjectByMobile(phone);
             if (user != null) {
@@ -79,6 +79,7 @@ public class NoLoginService {
             //格式化返回会员信息
             Map<String, Object> result = userManager.packUserInfo(obj);
             request.getSession().setAttribute(Constant.SESSION_USER_KEY, obj);
+            //TODO:返回用户信息
             return new RetInfo(RetInfo.SUCCESS, "注册成功！", JsonUtil.getJsonStrFromEntity(result));
         } catch (Exception e) {
             logger.error(e.getMessage());

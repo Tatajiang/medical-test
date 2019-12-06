@@ -1,16 +1,24 @@
 package com.jiang.medical.service;
 
+import com.homolo.framework.dao.util.PaginationSupport;
+import com.homolo.framework.dao.util.Range;
+import com.homolo.framework.dao.util.Sorter;
 import com.homolo.framework.rest.ActionMethod;
 import com.homolo.framework.rest.RequestParameters;
 import com.homolo.framework.rest.RestService;
 import com.homolo.framework.util.MD5Util;
 import com.jiang.medical.Constant;
+import com.jiang.medical.platform.operation.condition.MedicalItemsCondition;
+import com.jiang.medical.platform.operation.condition.ReservationRecordCondition;
 import com.jiang.medical.platform.operation.domain.MedicalItems;
 import com.jiang.medical.platform.operation.domain.ReservationRecord;
 import com.jiang.medical.platform.operation.manager.MedicalItemsManager;
 import com.jiang.medical.platform.operation.manager.ReservationRecordManager;
 import com.jiang.medical.platform.system.domain.User;
 import com.jiang.medical.platform.system.manager.UserManager;
+import com.jiang.medical.util.AutoEvaluationUtil;
+import com.jiang.medical.util.DateUtil;
+import com.jiang.medical.util.JsonUtil;
 import com.jiang.medical.util.RetInfo;
 import com.jiang.medical.util.SessionUtil;
 import com.jiang.medical.util.StringUtil;
@@ -20,7 +28,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @description: 登录时拥有得接口
@@ -41,6 +52,62 @@ public class LoginService {
     @Autowired
     private MedicalItemsManager medicalItemsManager;
 
+
+    /* *
+     * @Description: 获取个人信息
+     * @Param: [reqParams, request]
+     * @return: java.lang.Object
+     * @Author: zhantuo.jiang
+     * @date: 2019/12/6 14:25
+     */
+    @ActionMethod(response = "json")
+    public Object getPersonalInfo(RequestParameters reqParams, HttpServletRequest request) {
+        try {
+            User user = getUserBySessionId(reqParams, request);
+            if (user == null) {
+                return new RetInfo(RetInfo.AGAINLOGIN, "身份已过期，请重新登录");
+            }
+            User obj = userManager.getObject(user.getId());
+
+            Map<String, Object> result = userManager.packUserInfo(obj);
+            return new RetInfo(RetInfo.SUCCESS, "获取成功", JsonUtil.getJsonStrFromEntity(result));
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return new RetInfo(RetInfo.FAILURE, e.getMessage());
+        }
+    }
+    
+    /* *
+     * @Description: 修改用户信息
+     * @Param: [reqParams, request]
+     * @return: java.lang.Object
+     * @Author: zhantuo.jiang
+     * @date: 2019/12/6 14:19
+     */
+    @ActionMethod(response = "json")
+    public Object updateUserInfo(RequestParameters reqParams, HttpServletRequest request) {
+        try {
+            User user = getUserBySessionId(reqParams, request);
+            if (user == null) {
+                return new RetInfo(RetInfo.AGAINLOGIN, "身份已过期，请重新登录");
+            }
+            User obj = userManager.getObject(user.getId());
+
+            try {
+                AutoEvaluationUtil.evaluationObject(reqParams, obj);
+            } catch (Exception e) {
+                return new RetInfo(RetInfo.FAILURE, "资料信息填写有误");
+            }
+            userManager.update(obj);
+            request.getSession().setAttribute(Constant.SESSION_USER_KEY, obj);
+
+            Map<String, Object> result = userManager.packUserInfo(obj);
+            return new RetInfo(RetInfo.SUCCESS, "资料个人信息成功", JsonUtil.getJsonStrFromEntity(result));
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return new RetInfo(RetInfo.FAILURE, e.getMessage());
+        }
+    }
 
     /* *
      * @Description: 修改密码
@@ -167,6 +234,66 @@ public class LoginService {
             return new RetInfo(RetInfo.FAILURE, e.getLocalizedMessage());
         }
     }
+
+
+    /* *
+     * @Description: 获取我的预约记录
+     * @Param: [reqParams, request]
+     * @return: java.lang.Object
+     * @Author: zhantuo.jiang
+     * @date: 2019/12/6 13:55
+     */
+    @ActionMethod(response = "json")
+    public Object queryReservationRecord(RequestParameters reqParams, HttpServletRequest request) {
+        try {
+            User user = getUserBySessionId(reqParams, request);
+            if (user == null) {
+                return new RetInfo(RetInfo.FAILURE, "请先进行登录！");
+            }
+
+            Sorter sorter = AutoEvaluationUtil.genSorter(reqParams); 					// 排序
+            Range range = AutoEvaluationUtil.genRange(reqParams); 						// 页码
+            String medicalName = reqParams.getParameter("medicalName", String.class); // 套餐名称
+
+            ReservationRecordCondition cn = new ReservationRecordCondition();
+            //获取套餐ids
+            if (StringUtils.isNotBlank(medicalName)) {
+                ArrayList<String> medicalIds = new ArrayList<>();
+                MedicalItemsCondition medicalItemsCondition = new MedicalItemsCondition();
+                medicalItemsCondition.setMedicalName(medicalName);
+                List<MedicalItems> list = medicalItemsManager.list(medicalItemsCondition);
+                for (MedicalItems medicalItems : list) {
+                    medicalIds.add(medicalItems.getId());
+                }
+                if (medicalIds.size() > 0 ){
+                    cn.setNeMedicalIds(medicalIds);
+                }
+            }
+            PaginationSupport<ReservationRecord> ps = reservationRecordManager.pageList(cn, range, sorter);
+            List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+            for(ReservationRecord obj : ps.getItems()){
+                Map<String,Object> item = AutoEvaluationUtil.domainToMap(obj);
+                MedicalItems medical = medicalItemsManager.getObject(obj.getMedicalId());
+                if (null == medical)  continue;
+                item.put("userName",user.getNickname());
+                item.put("userCard", StringUtils.isNotBlank(user.getCard()) ? user.getCard() : "用户暂未填写该信息！");
+                item.put("medicalName",medical.getMedicalName());
+                //获取套餐内容
+                item.put("meidicalContent",medicalItemsManager.getItemNames(medical.getId()));
+                item.put("meaning",medical.getMeaning());
+                //解析时间
+                item.put("reservationTime", DateUtil.formatDateToDateTime(obj.getReservationTime()));
+                item.put("createTime", DateUtil.formatDateToDateTime(obj.getCreateTime()));
+                result.add(item);
+            }
+            return new RetInfo(RetInfo.SUCCESS,"获取成功", JsonUtil.getJsonStrFromEntity(result),
+                    ps.getCurrentPageNo(), ps.getTotalPage(), ps.getPageSize(),  ps.getTotalCount());
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return new RetInfo(RetInfo.FAILURE, e.getLocalizedMessage());
+        }
+    }
+    
 
 
 }

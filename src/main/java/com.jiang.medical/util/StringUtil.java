@@ -795,7 +795,7 @@ public class StringUtil {
 	}
 
 	/* *
-	 * @Description: 判断是否包含字母及数字并且在6-12位
+	 * @Description: 判断是否包含字母及数字并且在6-11位
 	 * @Param: [str]
 	 * @return: boolean
 	 * @Author: zhantuo.jiang
@@ -811,7 +811,7 @@ public class StringUtil {
 				isLetter = true;
 			}
 		}
-		String regex = "^[a-zA-Z0-9]{6,12}$";
+		String regex = "^[a-zA-Z0-9]{6,11}$";
 		boolean isRight = isDigit && isLetter && str.matches(regex);
 		return isRight;
 	}
