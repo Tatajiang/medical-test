@@ -149,7 +149,7 @@ public class NoLoginService {
 
             //分页查询
             MedicalItemsCondition condition = new MedicalItemsCondition();
-            condition.setShow(true);
+            //condition.setShow(true);
             PaginationSupport<MedicalItems> ps = medicalItemsManager.pageList(condition,range,sorter.asc("createTime"));
             for (MedicalItems obj : ps.getItems()) {
                 Map<String, Object> list = AutoEvaluationUtil.domainToMap(obj);
