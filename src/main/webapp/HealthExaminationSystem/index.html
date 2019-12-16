@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Health Examination System</title>
+        <link rel="stylesheet" href="../HealthExaminationSystem/lib/bootstrap-3.4.1-dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="../HealthExaminationSystem/lib/bootstrap-3.4.1-dist/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="CSS/index.css">
+        <link rel="icon" href="iconfont.ico">
+        <base target="_self">
+    </head>
+    <body>
+        <!--头部信息-->
+        <div id="headMessage" class="lay clearfix">
+            <!--左边-->
+            <div class="content loginAfter">
+                <ul class="nav navbar-nav">
+                    <li><img src="../HealthExaminationSystem/images/logo.png"></li>
+                    <li><a class="main" href="#"><span class="iconfont">&#xe60f;</span>首页</a></li>
+                    <li><a class="firstScreen" href="#firstScreen"><span class="iconfont">&#xe719;</span>产品</a></li>
+                    <li><a class="firstScreen" href="#firstScreen"><span class="iconfont">&#xe602;</span>新品</a></li>
+                    <li><a class="login" href="#"><span class="iconfont">&#xe63e;</span>预约</a></li>
+                </ul>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a class="login" href="#" ><span class="iconfont">&#xe613;</span>登录</a></li>
+                        <li><a class="register" href="#" ><span class="iconfont">&#xe69a;</span>注册</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!--登录-->
+            <form id="login" class="box" method="get" action="">
+                <span class="iconfont close fr">&#xe6a1;</span>
+                <div class="input_box1">
+                    <span>手机号：</span>
+                    <input id="name" type="text" name="user">
+                </div>
+                <div class="input_box2">
+                    <span>密&nbsp; &nbsp;码：</span>
+                    <input id="pass" type="password" name="psw">
+                </div>
+                <div id="error_box"><br></div>
+                <div class="input_box">
+                    <button type="button" class="btn btn-info primary" onclick="fnLogin()">登录</button>    
+                    <a class="register" href="#">
+                        <input type="button" class="btn btn-info info" name="register" value="注册">
+                    </a>
+                </div>
+            </form>
+
+            <!--注册-->
+            <form id="register" class="box" method="get" action="">
+                <span class="iconfont close fr">&#xe6a1;</span>
+                <div class="input_box3">
+                    <span class="p3">手机号：</span>
+                    <input id="tel" type="text" name="tel">
+                </div>
+                <div class="input_box2">
+                    <span class="p2">密&nbsp; &nbsp;码：</span>
+                    <input id="pass1" type="password" name="psw">
+                </div>
+                <div id="error_box1"><br></div>
+                <div class="input_box">  
+                    <a href="#" onclick="fnregister()">
+                        <input type="button" class="btn btn-info" name="register"  value="注册">
+                    </a>
+                </div>
+            </form>
+
+            <!--登录后-->
+            <div class="content loginBefore">
+                <ul class="nav navbar-nav">
+                    <li><img src="../HealthExaminationSystem/images/logo.png"></li>
+                    <li><a class="main" href="#"><span class="iconfont">&#xe60f;</span>首页</a></li>
+                    <li><a class="firstScreen" href="#firstScreen"><span class="iconfont">&#xe719;</span>产品</a></li>
+                    <li><a class="firstScreen" href="#firstScreen"><span class="iconfont">&#xe602;</span>新品</a></li>
+                </ul>
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">在线预约 <span class="iconfont">&#xe68b;</span></a>
+                        <ul class="dropdown-menu">
+                            <li><a class="medicalRecord" href="#">体检记录</a></li>
+                            <li><a class="appointment" href="#">在线预约</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a href="#" class="user" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">用户 <span class="iconfont">&#xe68b;</span></a>
+                        <ul class="dropdown-menu">
+                            <li><a class="changeInformation" href="#">修改信息</a></li>
+                            <li><a onclick="fnLogOut()" class="logOut" href="#">退出登录</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <!--预约-->
+            <form id="appointment" class="box" method="get" action="">
+                <span class="iconfont close fr">&#xe6a1;</span>
+                <div class="input_box3">
+                    <span class="p3 fl">套餐类型:</span>
+                    <select name="province">
+                        <option>套餐一</option>
+                        <option>套餐二</option>
+                        <option>套餐三</option>
+                        <option>套餐四</option>
+                        <option>套餐五</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <span class="p4">时&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;间：</span>
+                    <input name="startTime" id="startTime" class="form-control"  type="text"  datepicker="date">
+                </div>
+                <div id="error_box"><br></div>
+                <div class="input_box">
+                    <button type="button" class="btn btn-info" onclick="fnAppointment()">确定</button>    
+                </div>
+            </form>
+
+            <!--修改信息-->
+            <form id="changeInformation" class="box" method="get" action="">
+                <span class="iconfont close fr">&#xe6a1;</span>
+                <div class="input_box1">
+                    <span class="p1">性别:</span>
+                    <label><span class="iconfont c1 f1">&#xe603;男</span><input id="sex1" class="usex" type="radio" checked ="checked" name="sex"></label>
+                    <label><span class="iconfont c2 f1">&#xe604;女</span><input id="sex2" class="usex" type="radio" name="sex"></label>
+                </div>
+                <div class="input_box2">
+                    <span class="p2">年龄:</span>
+                    <input id="age" type="text" name="age">
+                </div>
+                <div class="input_box3">
+                    <span class="p3">手机号：</span>
+                    <input id="tel" type="text" name="tel">
+                </div>
+                <div class="input_box4">
+                    <span class="p4">身份证：</span>
+                    <input id="card" type="text" name="card">
+                </div>
+                <div id="error_box1"><br></div>
+                <div class="input_box">
+                    <button type="button" class="btn btn-info primary" onclick="fnchangeInformation()">确定</button>    
+                    <a class="register" href="#">
+                        <input type="button" class="btn btn-info info" name="register" value="注销">
+                    </a>
+                </div>
+            </form>
+
+        </div>
+
+        <!--体检记录-->
+        <div id="medicalRecord">
+            <form method="get" action="">
+                <div class="searchContent clearfix">
+                    <div class="searchBox fl">
+                        <input type="text" id="txt" value="" />
+                        <i class="iconfont ico">&#xe501;</i>
+                    </div>
+                    <div class="btn fl">
+                        <button id="btn" type="submit">搜索</button>
+                    </div>
+                </div>
+            </form>    
+            <table>
+                <thead>
+                    <tr>
+                        <th>时间</th>
+                        <th class="set">套餐</th>
+                        <th>预约状态</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2015-10-1</td>
+                        <td>套餐一</td>
+                        <td>预约成功</td>
+                    </tr>
+                    <tr>
+                        <td>2016-10-1</td>
+                        <td>套餐一</td>
+                        <td>预约成功</td>
+                    </tr>
+                    <tr>
+                        <td>2017-10-1</td>
+                        <td>套餐一</td>
+                        <td>预约成功</td>
+                    </tr>
+                    <tr>
+                        <td>2018-10-1</td>
+                        <td>套餐一</td>
+                        <td>预约成功</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!--轮播图-->
+        <div class="lunbo1">
+            <div id="myCarousel" class="carousel slide">
+                <ol class="carousel-indicators">
+                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                    <li data-target="#myCarousel" data-slide-to="1"></li>
+                    <li data-target="#myCarousel" data-slide-to="2"></li>
+                </ol>
+                <div class="carousel-inner">
+                    <div class="active item"><img src="../HealthExaminationSystem/images/lunbo1.jpg"></div>
+                    <div class="item"><img src="../HealthExaminationSystem/images/lunbo4.jpg"></div>
+                    <div class="item"><img src="../HealthExaminationSystem/images/lunbo5.jpg"></div>
+                </div>
+                <a class="carousel-control left" href="#myCarousel" role="button"  data-slide="prev"></span>
+                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                </a>
+                <a class="carousel-control right" href="#myCarousel" role="button" data-slide="next"></span>
+                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                </a>
+            </div>
+        </div>
+        <!--产品-->
+        <div id="firstScreen" class="lay clearfix">
+            <div class="title">
+                <img src="../HealthExaminationSystem/images/bt2.png">
+            </div>
+            <!--侧边导航-->
+            <div class="sideNav fl">
+                <ul id="sideNavUl">
+                </ul>
+            </div>
+
+            <!--图片容器-->
+            <div id="middle_right">
+                <!--轮播图-->
+                <div id="lunbobox">
+                    <div id="toleft">&lt;</div>
+                        <div id="lunboDiv" class="lunbo"></div>
+                        <div id="toright">&gt;</div>
+                        <ul></ul>
+                        <span></span>
+                    </div>
+                </div>
+
+                <!--套餐信息-->
+                <div id="newsDiv" class="news">
+                    <div id="content1"></div>
+                </div>
+            </div>
+
+        </div>
+
+        <!--介绍-->
+        <div id="introduce">
+            <div class="title">
+                <img src="../HealthExaminationSystem/images/bt3.png">
+            </div>
+            <p>创于2004年，总部位于上海，于2018年正式完成中国版图的全覆盖（除港、澳、台地区），集团于2015年8月成功在A股上市（SZ：002044），
+                分别于2016年、2017年收购“美兆”、“慈铭”，成为医疗和大健康板块中市值和影响力杰出的上市公司。2018年5月15日，纳入MSCI 指数，
+                同年10月19日，获得穆迪BA2、惠誉BB+评分，得到国际最高级别评级机构支持。美年健康现为中证200指数、沪深300指数、中证700指数、
+                中证800指数成分股。美年健康颠覆传统体检思路，推出专业体检套餐。</p>
+        </div>
+
+        <!--联系我们-->
+        <div id="contact" class="lay clearfix">
+            <h3 class="fl">
+                <img class="fl" src="../HealthExaminationSystem/images/photo.png">
+                <i><span class="iconfont">&#xe769;</span>联系我们</i>
+                <p>体检——助你校正健康坐标</p>
+                <p>联系方式：2534653654</p>
+            </h3>
+            <div class="fr">
+                <img class="fr p1" src="../HealthExaminationSystem/images/QR1.jpg" alt="二维码">
+                <img class="fr p2" src="../HealthExaminationSystem/images/QR2.jpg" alt="二维码">
+            </div>
+        </div>
+
+        <script src="../HealthExaminationSystem/lib/jquery/jquery-3.4.1.min.js"></script>
+        <script src="../HealthExaminationSystem/lib/bootstrap-3.4.1-dist/js/bootstrap.min.js"></script>
+        <script src="../HealthExaminationSystem/lib/bootstrap-3.4.1-dist/js/moment.js"></script>
+        <script src="../HealthExaminationSystem/lib/bootstrap-3.4.1-dist/js/zh-cn.js"></script>
+        <script src="../HealthExaminationSystem/lib/bootstrap-3.4.1-dist/js/bootstrap-datetimepicker.js"></script>
+        <script type="text/javascript" src="../HealthExaminationSystem/JS/util.js"></script>
+        <script type="text/javascript" src="../HealthExaminationSystem/JS/index.js"></script>
+        <script type="text/javascript" src="../HealthExaminationSystem/JS/default.js"></script>
+
+    </body>
+</html>

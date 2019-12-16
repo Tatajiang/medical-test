@@ -1,0 +1,561 @@
+@import 'reset.css';
+
+body{
+    background: url(../images/bg2.jpg) center no-repeat;
+    background-size: 100% 100%;
+}
+/*头部信息*/
+#headMessage li{
+    float: left;
+    line-height: 75px;
+    padding: 0 6px;
+    font-size: 0px;
+}
+#headMessage li a{
+    color: #000;
+    font-size: 20px;
+    padding: 6px 15px;
+    line-height: 70px;
+    text-decoration: none;
+}
+#headMessage li a:hover{
+    color: #fff;
+    background-image: linear-gradient(to right,#c4abf8da 0,#8eddfad8 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c4abf8da', endColorstr='#8eddfad8', GradientType=1);
+    border-radius: 20px 20px 20px 20px;
+}
+#headMessage li a span{
+    font-weight: bolder;
+}
+
+/*登录后*/
+#headMessage .loginBefore .dropdown-menu li a{
+    padding: 0 36px;
+}
+
+/*-------------------------------------------------*/
+
+/*登录*/
+#login,#register,#appointment,#changeInformation{
+    height: 365px;
+    width: 500px;
+    position: absolute;
+    transform: translate(-50%,0);/*水平居中*/
+    left: 50%;
+    background: url(../images/timg.gif) center center no-repeat;
+    border-radius: 50px;
+    z-index: 2001;
+    top: 140px;
+}
+#login .close,#register .close,#appointment .close,#changeInformation .close{
+    margin: 5% 5%;
+    cursor:pointer;
+    color: #052DDD;
+}
+#login .input_box1,#login .input_box2,#register .input_box2,#register .input_box3{
+    font-weight: bolder;
+    color: #fc84e8;
+    line-height: 35px;
+}
+#login .input_box1{
+    height: 35px;
+    width: 300px;
+    margin: 60px auto;
+}
+#login .input_box2{
+    height: 35px;
+    width: 300px;
+    margin: 60px auto;
+}
+#login .input_box1 #name,#login .input_box2 #pass{
+    width: 250px;
+    height: 35px;
+    outline: none;
+}
+#login .input_box1 #name,#login .input_box2 #pass{
+    text-indent: 3px;
+    color: #000;
+    background-color: rgba(255, 255, 255,-0.4);
+    margin: 0 5px 0;
+    border: none;
+    border-bottom: 3px solid #48b7d9;
+    position: absolute;
+}
+#login .input_box .btn{
+    width: 85px;
+    height: 35px;
+    color: #fff;
+    border-radius: 20px 20px 20px 20px;
+    outline: none;
+    border: none;
+}
+#login #error_box{
+    color: #fc0107;
+    margin: 25px 64px 5px 187px;
+}
+#login .input_box .primary{
+    margin: 0 64px 5px 134px;
+}
+#login .input_box .info{
+    margin:-5px 0 0 0;
+}
+
+/*-------------------------------------------------*/
+
+/*注册*/
+#register #error_box1{
+    color: #fc0107;
+    margin: 17px 64px 5px 190px;
+}
+#register .input_box2{
+    height: 35px;
+    width: 300px;
+    margin: 40px auto;
+}
+#register .input_box3{
+    height: 35px;
+    width: 300px;
+    margin: 75px auto;
+}
+#register .input_box2 #pass1,#register .input_box3 #tel{
+    width: 250px;
+    height: 35px;
+    text-indent: 3px;
+    color: #000;
+    background-color: rgba(255, 255, 255,-0.4);
+    border: none;
+    border-bottom: 3px solid #48b7d9;
+    outline: none;
+}
+#register .input_box2 #pass1{
+    margin: 0 5px 0;
+    position: absolute;
+}
+#register .input_box3 #tel{
+    margin: 0 5px 0;
+    position: absolute;
+}
+#register .input_box .btn{
+    width: 115px;
+    height: 35px;
+    color: #fff;
+    font-size: 16px;
+    border-radius: 20px 20px 20px 20px;
+    outline: none;
+    border: none;
+    margin: 0 0 0 194px;
+}
+
+/*轮播图*/
+.lunbo1{
+    margin: auto;
+    width: 1349px;
+    height: 500px;
+}
+#myCarousel span{
+    opacity: 0.3;
+}
+
+/*-------------------------------------------------*/
+
+/*预约*/
+#appointment #error_box1{
+    color: #fc0107;
+    margin: 17px 64px 5px 190px;
+}
+#appointment .input_box3 .p3,#appointment .input-group .p4{
+    line-height: 33px;
+    font-weight: bolder;
+    margin-right: 5px;
+    color: #fc84e8;
+}
+#appointment .input_box3{
+    width: 154px;
+    margin: 80px 0 25px 166px;
+}
+#appointment .input_box3,#appointment .input-group{
+    height: 35px;
+    box-sizing: border-box;
+}
+#appointment .input_box3 select,#appointment .input-group #startTime{
+    position: absolute;
+    height: 35px;
+    width: 90px;
+    outline: none;
+    border: 2px solid #48b7d9;
+    border-radius: 20px 20px 20px 20px;
+}
+#appointment .input_box3 select{
+    color: #4b4848;
+    margin: -2px 13px;
+}
+#appointment .input-group{
+    width: 213px;
+    margin: 40px 0 25px 166px;
+}
+#appointment .input-group #startTime{
+    width: 150px;
+    margin: -32px 42px;
+}
+#appointment .input_box .btn{
+    width: 85px;
+    height: 35px;
+    color: #fff;
+    border-radius: 20px 20px 20px 20px;
+    outline: none;
+    border: none;
+    margin: 0px 208px;
+}
+
+/*-------------------------------------------------*/
+
+/*修改信息*/
+#changeInformation .input_box1 .p1,#changeInformation .input_box2 .p2,#changeInformation .input_box3 .p3,#changeInformation .input_box4 .p4{
+    line-height: 33px;
+    font-weight: bolder;
+    margin-right: 5px;
+    color: #fc84e8;
+}
+#changeInformation .input_box1{
+    margin: 54px 143px 0 ;
+}
+#changeInformation .input_box1 .usex{
+    vertical-align: middle;
+    width: 40px;
+    height: 33px;
+}
+#changeInformation .input_box2{
+    height: 35px;
+    width: 100px;
+    box-sizing: border-box;
+    margin: 8px 174px 25px ;
+}
+#changeInformation .input_box2 #age{
+    width: 90px;
+}
+#changeInformation .input_box2 #age,#changeInformation .input_box3 #tel,#changeInformation .input_box4 #card{
+    position: absolute;
+    height: 35px;
+    text-indent: 3px;
+    color: #000;
+    background-color: rgba(255, 255, 255,-0.4);
+    border: none;
+    border-bottom: 3px solid #48b7d9;
+    outline: none;
+}
+#changeInformation .input_box3{
+    margin: 0 101px 0;
+}
+#changeInformation .input_box3 #tel{
+    margin: 0 5px 0;
+    position: absolute;
+}
+#changeInformation .input_box4{
+    margin: 30px 101px 0;
+}
+}
+#changeInformation .input_box4 #card{
+    margin: 30px 5px 0;
+    position: absolute;
+}
+#changeInformation .input_box .btn{
+    width: 85px;
+    height: 35px;
+    color: #fff;
+    border-radius: 20px 20px 20px 20px;
+    outline: none;
+    border: none;
+}
+#changeInformation #error_box1{
+    color: #fc0107;
+    margin: 25px 64px 5px 187px;
+}
+#changeInformation .input_box .primary{
+    margin: 0 64px 5px 134px;
+}
+#changeInformation .input_box .info{
+    margin:-6px 0 0 0;
+}
+
+/*-------------------------------------------------*/
+
+/*体检记录*/
+#medicalRecord{
+    width: 1349px;
+    height: 500px;
+    position: relative;
+    transform: translate(-50%,0);/*水平居中*/
+    left: 50%;
+}
+#medicalRecord .searchContent{
+    height: 40px;
+    margin: 23px 359px;
+}
+#medicalRecord .searchBox{
+    width: 554px;
+    height: 38px;
+    box-sizing: border-box;
+    border: 2px solid #c4abf8da;
+    border-right: none;
+    border-radius: 20px 0 0 20px;
+    overflow: hidden;
+    position: relative;
+}
+#medicalRecord .searchBox input{
+    width: 490px;
+    height: 36px;
+    line-height: 36px;
+    outline: none;
+    border: none;
+    text-indent: 10px;
+    position: absolute;
+    z-index: 2;
+    background-color: transparent;
+}
+#medicalRecord .searchBox i{
+    position: absolute;
+    top: 6px;
+    left: 14px;
+    font-size: 20px;
+    line-height: 25px;
+    color: #9c9c9c;
+}
+#medicalRecord .btn{
+    padding: 0;
+    margin: -1px 0 0 -2px;
+}
+#medicalRecord .searchContent button{
+    width: 74px;
+    height: 38px;
+    text-align: center;
+    font-size: 18px;
+    line-height: 40px;
+    color: #fff;
+    border: none;
+    background-image: linear-gradient(to right,#c4abf8da 0,#8eddfad8 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c4abf8da', endColorstr='#8eddfad8', GradientType=1);
+    border-radius: 0 20px 20px 0;
+}
+#medicalRecord .searchContent #btn:hover{
+    color: #000;
+}
+#medicalRecord table{
+    width: 1030px;
+    border: 2px solid #8eddfa;
+    margin: 0 auto;
+    border-collapse: collapse;/*边框合并*/
+}
+#medicalRecord table .set{
+    width: 470px;
+}
+#medicalRecord tr{
+    height: 30px;
+    text-align: center;
+}
+#medicalRecord th,td{
+    text-align: center;
+    border: 2px solid #8eddfa;
+}
+
+/*产品*/
+#firstScreen{
+    width: 1265px;
+}
+#firstScreen .title img{
+    margin:50px 553px 20px;
+    width: 155px;
+    height: 95px;
+}
+/*左边内容*/
+#firstScreen {
+    width: 1265x;
+    z-index: 10;
+}
+/*侧边导航*/
+#firstScreen  .sideNav{
+    width: 250px;
+    height: 551px;
+    border: 1px solid #8eddfad8;
+    box-sizing: border-box;
+}
+ .sideNav li{
+    padding-left: 17px;
+    color: #999;
+    font-size: 14px;
+    /*过度背景色*/
+    transition: background-color 0.3s;
+    overflow: hidden;
+    white-space: nowrap;
+    /*自适应高度*/
+    height: auto;
+    min-height: 205px;
+    cursor: pointer;
+}
+ .sideNav li a{
+    font-size: 15px;
+    font-weight: bold;
+    color: #666;
+}
+ .sideNav li span{
+    font-size: 15px;
+    font-weight: bold;
+    margin-right: 5px;
+}
+ .sideNav li:hover{
+    color: #e1c68b;
+}
+ .sideNav li:hover a{
+    color: #e1c68b;
+}
+ .sideNav a:hover{
+    text-decoration: underline;
+}
+
+/*图片1容器*/
+#firstScreen #middle_right{
+    width:1015px;
+    height:550px;
+    border: 1px solid #8eddfad8;
+    position:relative;
+    left: 250px;
+}
+#firstScreen #lunbobox {
+	width:1012px;
+	height:550px;
+    position:absolute;
+    top:0px;
+    z-index: 10;
+    overflow: hidden;
+    clear: both;
+}
+#firstScreen .lunbo {
+	width:1012px;
+    height:550px;
+    overflow: hidden;
+}
+#firstScreen .lunbo img {
+	width:1012px;
+	height:550px;
+    position:absolute;
+    
+}
+#firstScreen #lunbobox ul {
+	width:285px;
+	position:absolute;
+	bottom:25px;
+	right:0px;
+    left:440px;   
+}
+#firstScreen #lunbobox ul li {
+	cursor:pointer;
+	width:25px;
+    height:5px;
+	border:1px solid #cccccc;
+	float:left;
+	list-style:none;
+	background:#cccccc;
+	text-align:center;
+	margin:0px 5px 0px 0px;
+}
+#firstScreen #toleft {
+	display:none;
+	width:30px;
+	height:100px;
+	font-size:40px;
+	line-height:100px;
+	text-align:center;
+	color:#f4f4f4;
+    left:0px;
+    position:absolute;
+	top:205px;
+	left:35px;
+	cursor:pointer;
+	z-index:99;
+	opacity:0.4;
+}
+#firstScreen #toright {
+	display:none;
+	width:30px;
+	height:100px;
+	font-size:40px;
+	line-height:100px;
+	text-align:center;
+	color:#f4f4f4;
+    left:945px;
+    position:absolute;
+	top:205px;
+	right:0px;
+	cursor:pointer;
+	z-index:99;
+	opacity:0.4;
+}
+
+/*套餐信息*/
+#firstScreen .news{
+    width:1012px;
+    height:550px;
+    margin: -549px 251px;
+    z-index: 6000;
+    position: absolute;
+}
+#firstScreen .news #content1 .panel{
+    width:1012px;
+    height:550px;
+    color: #fff;
+    text-align: center;
+    font-size: 15px;
+    padding: 10px;
+    background-color: transparent;
+}
+/*介绍*/
+#introduce{
+    width: 1000px;
+    margin: 50px auto;
+    text-align: center;
+}
+#introduce .title img{
+    margin:50px 423px 20px;
+    width: 155px;
+    height: 95px;
+}
+#introduce p{
+    font-size: 16px;
+    margin: 5px 0 0;
+}
+
+/*联系我们*/
+#contact{
+    height: 200px;
+}
+#contact h3{
+    margin: 59px 0 0 150px;
+}
+#contact h3 img{
+    height: 100px;
+    font-size: 0;
+    font-weight: normal;
+}
+#contact h3 i{
+    color: #000;
+    vertical-align: middle;
+    font-size: 23px;
+    margin: 0 0 0 50px;
+}
+#contact h3 i span{
+    font-size: 23px;
+}
+#contact h3 p{
+    color: #2f3030;
+    font-size: 15px;
+    margin: 5px 0 0 150px;
+}
+#contact .p1{
+    height: 100px;
+    margin: 50px 100px 0 0;
+}
+#contact .p2{
+    height: 100px;
+    margin: 50px 20px 0 0;
+}
+
+

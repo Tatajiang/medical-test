@@ -165,7 +165,39 @@ public class NoLoginService {
             logger.error(e.getMessage());
             return new RetInfo(RetInfo.FAILURE, e.getMessage());
         }
-    } 
-    
-    
+    }
+
+    /* *
+     * @Description: 通过Jsessionid获取用户信息判断用户是否登录
+     * @Param: [reqParams, request]
+     * @return: java.lang.Object
+     * @Author: zhantuo.jiang
+     * @date: 2019/12/16 18:51
+     */
+    @ActionMethod(response = "json")
+    public Object getUserBySessionId(RequestParameters reqParams, HttpServletRequest request) throws Exception {
+        try {
+            String sessionId = reqParams.getParameter("jsessionid",String.class);
+            if (StringUtils.isBlank(sessionId)) {
+                return new RetInfo(RetInfo.FAILURE, "参数错误");
+            }
+            //再通过sessionId 获取会员对象
+            User obj = userManager.getObjectBySessionId(sessionId);
+            if (obj == null) {
+                return new RetInfo(RetInfo.AGAINLOGIN, "身份已过期，请重新登录");
+            }
+            //刷新session
+            request.getSession().setAttribute(Constant.SESSION_USER_KEY, obj);
+            obj.setJsessionid(request.getSession().getId());
+            userManager.update(obj);
+            //格式化返回会员信息
+            Map<String, Object> result = userManager.packUserInfo(obj);
+            return new RetInfo(RetInfo.SUCCESS, "登录成功！", JsonUtil.getJsonStrFromEntity(result));
+        }catch (Exception e) {
+            logger.error(e.getMessage());
+            return new RetInfo(RetInfo.FAILURE, e.getMessage());
+        }
+    }
+
+
 }

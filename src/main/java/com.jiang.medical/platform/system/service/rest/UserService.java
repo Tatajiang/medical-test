@@ -15,7 +15,11 @@ import com.jiang.medical.platform.system.domain.User;
 import com.jiang.medical.platform.system.manager.LoginLogManager;
 import com.jiang.medical.platform.system.manager.SysRolesManager;
 import com.jiang.medical.platform.system.manager.UserManager;
-import com.jiang.medical.util.*;
+import com.jiang.medical.util.AutoEvaluationUtil;
+import com.jiang.medical.util.DateUtil;
+import com.jiang.medical.util.SessionUtil;
+import com.jiang.medical.util.StringUtil;
+import com.jiang.medical.util.ValidatorUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -103,6 +107,7 @@ public class UserService extends BaseDomainObjectServiceSupport<DomainObject> {
 		User obj = new User();
 		try {
 			AutoEvaluationUtil.evaluationObject(reqParams, obj);
+			obj.setLevle(LevelEnum.Admin);
 			//验证
 			Map<String, String> erMap = validate(obj, RestSessionFactory.getCurrentContext());
 			ValidatorUtil.JSR303Validate(erMap);
