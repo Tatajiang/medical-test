@@ -10,7 +10,6 @@ package com.jiang.medical.platform.system.domain;
 import com.homolo.framework.annotation.PrimaryKey;
 import com.homolo.framework.bean.DomainObject;
 import com.jiang.medical.ProjectConfig;
-import com.jiang.medical.platform.enums.LevelEnum;
 import org.hibernate.annotations.Index;
 
 import javax.persistence.*;
@@ -60,16 +59,11 @@ public class User implements DomainObject {
 	private Gender gender = Gender.Male; 						//性别
 
 	@Column
-	@Enumerated(value = EnumType.STRING)
-	private LevelEnum levle = LevelEnum.User;					//用户级别
-
-	@Column
 	private Date createTime = new Date();						//创建时间
 	
 	@Column
 	@Index(name="Index_user_phone")
 	private String phone; 										//电话
-
 
 	@Column(length = 32)
 	@Index(name = "Index_user_jsessionid")
@@ -188,14 +182,6 @@ public class User implements DomainObject {
 
 	public void setCard(String card) {
 		this.card = card;
-	}
-
-	public LevelEnum getLevle() {
-		return levle;
-	}
-
-	public void setLevle(LevelEnum levle) {
-		this.levle = levle;
 	}
 
 	public String getJsessionid() {

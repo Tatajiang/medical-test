@@ -47,6 +47,10 @@ public class SysRoles implements DomainObject {
 		 */
 		admin("系统管理员"),
 		/**
+		 * 工作人员
+		 */
+		worker("工作人员"),
+		/**
 		 * 其他用户
 		 */
 		others("其他用户");

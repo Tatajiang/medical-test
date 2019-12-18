@@ -20,12 +20,6 @@
                     </div>
                     <div class="form-group col-xs-2">
                         <div class="input-group">
-                            <span class="input-group-addon">套餐名称:</span>
-                            <input name="medicalName" class="form-control" type="text">
-                        </div>
-                    </div>
-                    <div class="form-group col-xs-2">
-                        <div class="input-group">
                             <span class="input-group-addon">项目名称:</span>
                             <input name="itemName" class="form-control" type="text">
                         </div>
@@ -105,6 +99,17 @@
                 {field : "isCompleteName" ,title : "体检状态" ,align:"center" ,width : 80},
                 {field : "completeTime" ,title : "完成时间" ,align:"center" ,width : 80},
                 {field : "createTime" ,title : "创建时间" ,align:"center" ,width : 80},
+                {field : "operate", title : "操作", align:"center",width : 80,
+                    formatter: function(value,row,index){
+                        var html = '';
+                        if (row.isComplete){
+                            html += '<a class="btn btn-primary" disabled="disabled">已完成</a>';
+                        }else {
+                            html += '<a class="btn btn-primary" onclick="completeInsperct(\''+row.id+'\')">完成体检</a>';
+                        }
+                        return html;
+                    }
+                }
             ],
             onLoadSuccess: function () {// 数据加载成功
 
@@ -114,6 +119,24 @@
             }
         });
     });
+
+    // 修改
+    function completeInsperct(id){
+        Modal.confirm({ message: "确定已完成该体检项目吗?",icon:"fa fa-exclamation-circle"}).on(function (r) {
+            if(r){
+                var url = $ctx + '/service/rest/platform.operation.InspectRecordService/collection/completeInsperct';
+                $.postExtend(url, {id:id}, function(data){
+                    if(data.code == 1){
+                        Modal.alert({message: data.description, icon:'fa fa-check'}).on(function(){
+                            $('#dataList').bootstrapTable('refresh');
+                        });
+                    }else{
+                        Modal.alert({message: data.description, icon:'fa fa-error'});
+                    }
+                });
+            }
+        });
+    }
 
     function hideEditForm(){
         hideModal('editModal');

@@ -8,7 +8,6 @@
 package com.jiang.medical.platform.system.condition;
 
 import com.homolo.framework.dao.hibernate.HibernateCondition;
-import com.jiang.medical.platform.enums.LevelEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
@@ -46,8 +45,6 @@ public class UserCondition implements HibernateCondition {
 	private Boolean isRturnId;								// 是否只返回用户id
 	
 	private Boolean isDelete;								// 是否禁用(逻辑删除)
-
-	private LevelEnum levle ;								// 用户级别
 
 	private String card;									// 身份证号码
 
@@ -93,9 +90,6 @@ public class UserCondition implements HibernateCondition {
 		}
 		if(isDelete != null){
 			criteria.add(Restrictions.eq("isDelete", isDelete));
-		}
-		if(levle != null){
-			criteria.add(Restrictions.eq("levle", levle));
 		}
 		if(StringUtils.isNotBlank(card)){
 			criteria.add(Restrictions.eq("card", card));
@@ -158,10 +152,6 @@ public class UserCondition implements HibernateCondition {
 
 	public void setDelete(Boolean delete) {
 		isDelete = delete;
-	}
-
-	public void setLevle(LevelEnum levle) {
-		this.levle = levle;
 	}
 
 	public void setCard(String card) {

@@ -255,6 +255,7 @@ public class LoginService {
             String medicalName = reqParams.getParameter("medicalName", String.class); // 套餐名称
 
             ReservationRecordCondition cn = new ReservationRecordCondition();
+            cn.setUserId(user.getId());
             //获取套餐ids
             if (StringUtils.isNotBlank(medicalName)) {
                 ArrayList<String> medicalIds = new ArrayList<>();
@@ -292,7 +293,4 @@ public class LoginService {
             return new RetInfo(RetInfo.FAILURE, e.getLocalizedMessage());
         }
     }
-    
-
-
 }

@@ -7,7 +7,7 @@ import com.homolo.framework.dao.util.Sorter;
 import com.homolo.framework.rest.*;
 import com.homolo.framework.service.ServiceResult;
 import com.homolo.framework.util.MD5Util;
-import com.jiang.medical.platform.enums.LevelEnum;
+import com.jiang.medical.Constant;
 import com.jiang.medical.platform.system.condition.UserCondition;
 import com.jiang.medical.platform.system.domain.LoginLog;
 import com.jiang.medical.platform.system.domain.SysRoles;
@@ -72,9 +72,7 @@ public class UserService extends BaseDomainObjectServiceSupport<DomainObject> {
 			AutoEvaluationUtil.evaluationObject(reqParams, cn);
 			
 			PaginationSupport<User> pg = userManager.pageList(cn, range, sorter);
-			//查询所有管理员
-			cn.setLevle(LevelEnum.Admin);
-			
+
 			List<Map<String, Object>> items = new ArrayList<Map<String,Object>>();
 			for(User obj : pg.getItems()){
 				Map<String,Object> item = AutoEvaluationUtil.domainToMap(obj);
@@ -107,10 +105,10 @@ public class UserService extends BaseDomainObjectServiceSupport<DomainObject> {
 		User obj = new User();
 		try {
 			AutoEvaluationUtil.evaluationObject(reqParams, obj);
-			obj.setLevle(LevelEnum.Admin);
 			//验证
 			Map<String, String> erMap = validate(obj, RestSessionFactory.getCurrentContext());
 			ValidatorUtil.JSR303Validate(erMap);
+
 			userManager.create(obj);
 			return new ServiceResult(ReturnResult.SUCCESS,"添加成功"); 
 		} catch (Exception e) {
@@ -297,7 +295,10 @@ public class UserService extends BaseDomainObjectServiceSupport<DomainObject> {
 				map.put("error",error);
 				return map;
 			}
-			if (user.getLevle() != LevelEnum.Admin) {
+
+			//如果用户没有分配工作人员、管理员角色，则不让其登录后台管理页面
+			if (!user.getRoleIds().contains(Constant.SYSTEMCONSTANT_ADMIN_ROLE_ID) &&
+					!user.getRoleIds().contains(Constant.SYSTEMCONSTANT_WORKER_ROLE_ID)) {
 				error = "该账号不具备登录该页面权限！";
 				map.put("error",error);
 				return map;
@@ -310,14 +311,13 @@ public class UserService extends BaseDomainObjectServiceSupport<DomainObject> {
 			}
 			request.getSession().setAttribute("_user", user);
 
-			//如果是管理员才创建记录
-			if (user.getLevle() == LevelEnum.Admin) {
-				//开始创建登录日志
-				LoginLog log = new LoginLog();
-				log.setUserId(user.getId());
-				log.setIp(SessionUtil.getRemoteIP(request));
-				loginLogManager.create(log);
-			}
+
+			//开始创建登录日志
+			LoginLog log = new LoginLog();
+			log.setUserId(user.getId());
+			log.setIp(SessionUtil.getRemoteIP(request));
+			loginLogManager.create(log);
+
 
 			return map;
 		}catch (Exception e) {

@@ -314,7 +314,6 @@
     //上传职员头像（唤起弹出层）
     function uploadPicView(id){
         showModal("uploadPicModal");
-        debugger;
         var row = $('#dataList').bootstrapTable('getRowByUniqueId', id);
         // 清空div内容并设置背景图
         $(".file-drop-zone-title").html('');

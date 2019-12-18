@@ -82,4 +82,15 @@ public class InspectRecordManager {
     public PaginationSupport<InspectRecord> pageList(InspectRecordCondition condition, Range range, Sorter sorter) {
         return objDao.findByCondition(condition, range, sorter);
     }
+
+    @DomainEngine.C
+    @Transactional(rollbackFor = Exception.class)
+    public void createObjByInfo(String userId,String itemId,String reservationId){
+        InspectRecord obj = new InspectRecord();
+        obj.setUserId(userId);
+        obj.setItemId(itemId);
+        obj.setReservationId(reservationId);
+        objDao.createObject(obj);
+    }
+
 }

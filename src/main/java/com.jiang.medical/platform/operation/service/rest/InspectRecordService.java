@@ -9,10 +9,18 @@ import com.homolo.framework.rest.RestService;
 import com.homolo.framework.rest.ReturnResult;
 import com.homolo.framework.service.ServiceResult;
 import com.jiang.medical.platform.operation.condition.InspectRecordCondition;
+import com.jiang.medical.platform.operation.condition.ItemCondition;
+import com.jiang.medical.platform.operation.condition.MedicalItemsCondition;
 import com.jiang.medical.platform.operation.domain.Item;
 import com.jiang.medical.platform.operation.domain.InspectRecord;
+import com.jiang.medical.platform.operation.domain.MedicalItems;
+import com.jiang.medical.platform.operation.domain.ReservationRecord;
 import com.jiang.medical.platform.operation.manager.ItemManager;
 import com.jiang.medical.platform.operation.manager.InspectRecordManager;
+import com.jiang.medical.platform.operation.manager.MedicalItemsManager;
+import com.jiang.medical.platform.operation.manager.ReservationRecordManager;
+import com.jiang.medical.platform.system.condition.UserCondition;
+import com.jiang.medical.platform.system.domain.User;
 import com.jiang.medical.platform.system.manager.UserManager;
 import com.jiang.medical.util.AutoEvaluationUtil;
 import com.jiang.medical.util.DateUtil;
@@ -22,10 +30,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @description: ${description}
@@ -45,6 +50,12 @@ public class InspectRecordService {
     @Autowired
     private UserManager userManager;
 
+    @Autowired
+    private ReservationRecordManager reservationRecordManager;
+
+    @Autowired
+    private MedicalItemsManager medicalItemsManager;
+
     /* *
      * @Description: 分页查询
      * @Param: [reqParams, request]
@@ -59,15 +70,53 @@ public class InspectRecordService {
             Sorter sorter = AutoEvaluationUtil.genSorter(reqParams);	//排序
             Range range = AutoEvaluationUtil.genRange(reqParams);		//页码
 
+            String userName = reqParams.getParameter("userName", String.class);
+            String itemName = reqParams.getParameter("itemName", String.class);
+
             InspectRecordCondition cn = new InspectRecordCondition();
             AutoEvaluationUtil.evaluationObject(reqParams, cn);
+
+            //获取用户ids
+            if (StringUtils.isNotBlank(userName)) {
+                ArrayList<String> userIds = new ArrayList<>();
+                UserCondition userCondition = new UserCondition();
+                userCondition.setLikeNickName(userName);
+                List<User> list = userManager.list(userCondition);
+                for (User user : list) {
+                    userIds.add(user.getId());
+                }
+                cn.setNeUserIds(userIds);
+            }
+
+            //获取项目id
+            if (StringUtils.isNotBlank(itemName)) {
+                ArrayList<String> itemIds = new ArrayList<>();
+                ItemCondition itemCondition = new ItemCondition();
+                itemCondition.setName(itemName);
+                List<Item> itemList = itemManager.list(itemCondition);
+                for (Item Item : itemList) {
+                    itemIds.add(Item.getId());
+                }
+                cn.setNeItemIds(itemIds);
+            }
+
 
             PaginationSupport<InspectRecord> pg = inspectRecordManager.pageList(cn, range, sorter);
 
             List<Map<String, Object>> items = new ArrayList<Map<String,Object>>();
             for(InspectRecord obj : pg.getItems()){
                 Map<String,Object> item = AutoEvaluationUtil.domainToMap(obj);
-                 //TODO 解析内容
+                item.put("isComplete",obj.getComplete());
+                User userObj = userManager.getObject(obj.getUserId());
+                Item itemObj = itemManager.getObject(obj.getItemId());
+                ReservationRecord reservationObj = reservationRecordManager.getObject(obj.getReservationId());
+                if (userObj == null || itemObj == null || reservationObj == null) continue;
+                item.put("userName", userObj.getNickname());
+                item.put("itemName", itemObj.getName());
+                item.put("medicalName",medicalItemsManager.getObject(reservationObj.getMedicalId()).getMedicalName());
+                item.put("isCompleteName", obj.getComplete() ? "已完成" : "未完成");
+                item.put("completeTime", obj.getCompleteTime() == null ? "未完成" :DateUtil.formatDateToDateTime(obj.getCompleteTime()));
+                item.put("createTime", DateUtil.formatDateToDateTime(obj.getCreateTime()));
                 items.add(item);
             }
             map.put("rows", items);
@@ -148,4 +197,27 @@ public class InspectRecordService {
             return new ServiceResult(ReturnResult.FAILURE, e.getMessage());
         }
     }
+
+    /* *
+     * @Description: 完成体检项目
+     * @Param: [reqParams]
+     * @return: java.lang.Object
+     * @Author: zhantuo.jiang
+     * @date: 2019/12/18 20:33
+     */
+    @ActionMethod(response = "json")
+    public Object completeInsperct(RequestParameters reqParams) {
+        String id = reqParams.getParameter("id", String.class);
+        try {
+            InspectRecord obj = inspectRecordManager.getObject(id);
+            obj.setComplete(true);
+            obj.setCompleteTime(new Date());
+            inspectRecordManager.update(obj);
+            return new ServiceResult(ReturnResult.SUCCESS, "修改成功");
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return new ServiceResult(ReturnResult.FAILURE, e.getMessage());
+        }
+    }
+
 }

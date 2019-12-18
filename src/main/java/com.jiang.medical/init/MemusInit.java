@@ -31,6 +31,9 @@ public class MemusInit {
 
 	//普通用户资源列表
 	List<String> userOperation = new ArrayList<String>();
+
+	//普通用户资源列表
+	List<String> workerOperation = new ArrayList<String>();
 	
 	Operation obj = null;
 	
@@ -87,8 +90,6 @@ public class MemusInit {
 	@PostConstruct
 	public void initPlatFormMenu() throws Exception {
 		Integer intShowIndex=1000;
-		
-		
 		/* *
 		 * @Description: 用于初始化后台管理页面得层次结构（其中分为一个一层，其他的为二层结构）
 		 * @Param: []
@@ -148,6 +149,8 @@ public class MemusInit {
 		obj = operationManager.getObject(id);
 		//如果是超级管理员权限 则增加到list
 		listOperation.add(id);
+		//如果是工作人员权限，则添加到worker
+		workerOperation.add(id);
 		if(obj == null) {
 			initMemu(id , "体检管理", Constant.TREE_ROOT_ID, "体检管理", intShowIndex, null, "体检管理", 1, false, "fa fa-plus-square");
 		}
@@ -158,6 +161,8 @@ public class MemusInit {
 		obj = operationManager.getObject(id);
 		//如果是超级管理员权限 则增加到list
 		listOperation.add(id);
+		//如果是工作人员权限，则添加到worker
+		workerOperation.add(id);
 		if(obj == null) {
 			initMemu(id , "套餐管理", parentId, "套餐管理", intShowIndex, "/admin/operation/medicalItem.jsp", "套餐管理", 2, false, "");
 		}
@@ -167,6 +172,8 @@ public class MemusInit {
 		obj = operationManager.getObject(id);
 		//如果是超级管理员权限 则增加到list
 		listOperation.add(id);
+		//如果是工作人员权限，则添加到worker
+		workerOperation.add(id);
 		if(obj == null) {
 			initMemu(id , "项目管理", parentId, "项目管理", intShowIndex, "/admin/operation/item.jsp", "项目管理", 2, false, "");
 		}
@@ -177,6 +184,8 @@ public class MemusInit {
 		obj = operationManager.getObject(id);
 		//如果是超级管理员权限 则增加到list
 		listOperation.add(id);
+		//如果是工作人员权限，则添加到worker
+		workerOperation.add(id);
 		if(obj == null) {
 			initMemu(id , "预约管理", Constant.TREE_ROOT_ID, "预约管理", intShowIndex, null, "预约管理", 1, false, "fa fa-heartbeat");
 		}
@@ -186,6 +195,8 @@ public class MemusInit {
 		obj = operationManager.getObject(id);
 		//如果是超级管理员权限 则增加到list
 		listOperation.add(id);
+		//如果是工作人员权限，则添加到worker
+		workerOperation.add(id);
 		if(obj == null) {
 			initMemu(id , "预约记录", parentId, "预约记录", intShowIndex, "/admin/operation/reservationRecord.jsp", "预约记录", 2, false, "");
 		}
@@ -196,6 +207,8 @@ public class MemusInit {
 		obj = operationManager.getObject(id);
 		//如果是超级管理员权限 则增加到list
 		listOperation.add(id);
+		//如果是工作人员权限，则添加到worker
+		workerOperation.add(id);
 		if(obj == null) {
 			initMemu(id , "体检管理", Constant.TREE_ROOT_ID, "体检管理", intShowIndex, null, "体检管理", 1, false, "fa fa-calendar-check-o");
 		}
@@ -205,6 +218,8 @@ public class MemusInit {
 		obj = operationManager.getObject(id);
 		//如果是超级管理员权限 则增加到list
 		listOperation.add(id);
+		//如果是工作人员权限，则添加到worker
+		workerOperation.add(id);
 		if(obj == null) {
 			initMemu(id , "体检记录", parentId, "体检记录", intShowIndex, "/admin/operation/inspectRecord.jsp", "体检记录", 2, false, "");
 		}
@@ -238,6 +253,9 @@ public class MemusInit {
 		initRole(Constant.SYSTEMCONSTANT_ADMIN_ROLE_ID, "系统管理员", "系统管理员",SysRoles.Level.admin);
 
 		//初始化平台普通用户角色
+		initRole(Constant.SYSTEMCONSTANT_WORKER_ROLE_ID, "工作人员", "工作人员", SysRoles.Level.worker);
+
+		//初始化平台普通用户角色
 		initRole(Constant.SYSTEMCONSTANT_USER_ROLE_ID, "普通用户", "普通用户", SysRoles.Level.others);
 
 		//初始化平台超级管理员角色_资源关联
@@ -248,7 +266,14 @@ public class MemusInit {
 				initSysRoleOperation(oid,Constant.SYSTEMCONSTANT_ADMIN_ROLE_ID);
 			}
 		}
-
+		//初始化平台工作人员角色_资源关联
+		for(int i = 0 ; i < workerOperation.size(); i++) {
+			String oid = workerOperation.get(i);
+			SysRoleOperation r = sysRoleOperationManager.getObjectByRoleIdOperationId(Constant.SYSTEMCONSTANT_WORKER_ROLE_ID, oid);
+			if(r == null) {
+				initSysRoleOperation(oid,Constant.SYSTEMCONSTANT_WORKER_ROLE_ID);
+			}
+		}
 		//初始化平台普通用户角色_资源关联
 		for(int i = 0 ; i < userOperation.size(); i++) {
 			String oid = userOperation.get(i);

@@ -33,6 +33,10 @@ public class Constant {
 	 */
 	public static final String SYSTEMCONSTANT_USER_ROLE_ID = "c3f53d67213e11eaac96b025aa1bea4b";
 
+	/**
+	 * 平台-普通用户角色id
+	 */
+	public static final String SYSTEMCONSTANT_WORKER_ROLE_ID = "6d46728d217911eaa600b025aa1bea4b";
 
 	/**
 	 * 平台-角色-用户关联id

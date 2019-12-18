@@ -14,10 +14,8 @@ import com.homolo.framework.util.MD5Util;
 import com.homolo.framework.util.UUID;
 import com.jiang.medical.Constant;
 import com.jiang.medical.ProjectConfig;
-import com.jiang.medical.platform.enums.LevelEnum;
 import com.jiang.medical.platform.system.condition.UserCondition;
 import com.jiang.medical.platform.system.domain.User;
-import com.jiang.medical.util.AutoEvaluationUtil;
 import com.jiang.medical.util.DateUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -191,12 +189,8 @@ public class UserManager {
 		obj.setPassword(MD5Util.encryptPassword(password));
 		obj.setPictrueId(Constant.DEFAULT_HEAD);
 		//设置角色信息
-		//obj.setRoleIds(Constant.SYSTEMCONSTANT_USER_ROLE_ID);
-		//设置用户级别
-		obj.setLevle(LevelEnum.User);
-
+		obj.setRoleIds(Constant.SYSTEMCONSTANT_USER_ROLE_ID);
 		//TODO:是否添加默认的身份证号码等信息
-
 		this.create(obj);
 		return obj;
 	}
