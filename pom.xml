@@ -2,7 +2,7 @@
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <medicallVersion>4.0.0</medicallVersion>
+  <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.jiang</groupId>
   <artifactId>medical-test</artifactId>
@@ -93,7 +93,7 @@
     <dependency>
       <groupId>com.alibaba</groupId>
       <artifactId>fastjson</artifactId>
-      <version>1.2.2</version>
+      <version>1.2.25</version>
     </dependency>
 
     <dependency>
@@ -145,12 +145,6 @@
       <groupId>org.apache.poi</groupId>
       <artifactId>poi-ooxml-schemas</artifactId>
       <version>3.14</version>
-    </dependency>
-    <dependency>
-      <groupId>wsepr.easypoi</groupId>
-      <artifactId>excel</artifactId>
-      <version>0.2</version>
-      <classifier>fix</classifier>
     </dependency>
 
   </dependencies>

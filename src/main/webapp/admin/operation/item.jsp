@@ -149,7 +149,6 @@
             showToggle: true,
             showColumns: true,
             cardView: false,
-            striped: true,
             sortable: true,
             sidePagination: "server",
             pageList: [10, 25, 50, 100],

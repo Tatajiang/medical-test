@@ -28,6 +28,9 @@ public class MemusInit {
 	
 	//超级管理员角色权限资源列表
 	List<String> listOperation = new ArrayList<String>();
+
+	//普通用户资源列表
+	List<String> userOperation = new ArrayList<String>();
 	
 	Operation obj = null;
 	
@@ -187,6 +190,24 @@ public class MemusInit {
 			initMemu(id , "预约记录", parentId, "预约记录", intShowIndex, "/admin/operation/reservationRecord.jsp", "预约记录", 2, false, "");
 		}
 
+		parentId = "30cd7e78213f11eaac96b025aa1bea4b";
+		id = parentId;
+		intShowIndex += 5;
+		obj = operationManager.getObject(id);
+		//如果是超级管理员权限 则增加到list
+		listOperation.add(id);
+		if(obj == null) {
+			initMemu(id , "体检管理", Constant.TREE_ROOT_ID, "体检管理", intShowIndex, null, "体检管理", 1, false, "fa fa-calendar-check-o");
+		}
+
+		intShowIndex+=5;
+		id="55702212213f11eaac96b025aa1bea4b";
+		obj = operationManager.getObject(id);
+		//如果是超级管理员权限 则增加到list
+		listOperation.add(id);
+		if(obj == null) {
+			initMemu(id , "体检记录", parentId, "体检记录", intShowIndex, "/admin/operation/inspectRecord.jsp", "体检记录", 2, false, "");
+		}
 		
 		//首页图表统计
 		listOperation.add(Constant.HOME_CHARTS_ID);
@@ -197,13 +218,14 @@ public class MemusInit {
 	 * 初始化角色
 	 * @throws Exception
 	 */
-	private void initRole(String id,String description,String name) throws Exception {
+	private void initRole(String id,String description,String name,SysRoles.Level level) throws Exception {
 		SysRoles role = sysRolesManager.getObject(id);
 		if(role == null){
 			role = new SysRoles();
 			role.setId(id);
 			role.setDescription(description);
 			role.setName(name);
+			role.setLevel(level);
 			role.setFlage(true);
 			sysRolesManager.createObject(role);
 		}
@@ -213,14 +235,26 @@ public class MemusInit {
 	public void setInitFlow() throws Exception {
 
 		//初始化平台超级管理员角色
-		initRole(Constant.SYSTEMCONSTANT_ADMIN_ROLE_ID, "系统管理员", "系统管理员");
+		initRole(Constant.SYSTEMCONSTANT_ADMIN_ROLE_ID, "系统管理员", "系统管理员",SysRoles.Level.admin);
+
+		//初始化平台普通用户角色
+		initRole(Constant.SYSTEMCONSTANT_USER_ROLE_ID, "普通用户", "普通用户", SysRoles.Level.others);
 
 		//初始化平台超级管理员角色_资源关联
 		for(int i = 0 ; i < listOperation.size(); i++) {
 			String oid = listOperation.get(i);
 			SysRoleOperation r = sysRoleOperationManager.getObjectByRoleIdOperationId(Constant.SYSTEMCONSTANT_ADMIN_ROLE_ID, oid);
 			if(r == null) {
-				initSysRoleOperation(oid);
+				initSysRoleOperation(oid,Constant.SYSTEMCONSTANT_ADMIN_ROLE_ID);
+			}
+		}
+
+		//初始化平台普通用户角色_资源关联
+		for(int i = 0 ; i < userOperation.size(); i++) {
+			String oid = userOperation.get(i);
+			SysRoleOperation r = sysRoleOperationManager.getObjectByRoleIdOperationId(Constant.SYSTEMCONSTANT_USER_ROLE_ID, oid);
+			if(r == null) {
+				initSysRoleOperation(oid,Constant.SYSTEMCONSTANT_USER_ROLE_ID);
 			}
 		}
 	}
@@ -230,10 +264,10 @@ public class MemusInit {
 	 * @param operationId 某个资源的id
 	 * @throws Exception 
 	 */
-	private void initSysRoleOperation(String operationId) throws Exception {
+	private void initSysRoleOperation(String operationId,String roleId) throws Exception {
 		SysRoleOperation roleOperation = new SysRoleOperation();
 		roleOperation.setOperationId(operationId);
-		roleOperation.setRoleId(Constant.SYSTEMCONSTANT_ADMIN_ROLE_ID);
+		roleOperation.setRoleId(roleId);
 		sysRoleOperationManager.createObject(roleOperation);
 	}
 	

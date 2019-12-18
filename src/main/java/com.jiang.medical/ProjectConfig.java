@@ -5,6 +5,7 @@ import com.homolo.framework.dao.DomainObjectDao;
 import com.homolo.framework.dao.hibernate.BaseHibernateDaoSupport;
 import com.homolo.framework.events.EventTarget;
 import com.homolo.framework.module.ModuleConfig;
+import com.jiang.medical.platform.operation.domain.InspectRecord;
 import com.jiang.medical.platform.operation.domain.Item;
 import com.jiang.medical.platform.operation.domain.MedicalItems;
 import com.jiang.medical.platform.operation.domain.Relevance;
@@ -108,4 +109,17 @@ public class ProjectConfig {
 	public DomainObjectDao<ReservationRecord> generateReservationRecordDao() {
 		return new BaseHibernateDaoSupport<ReservationRecord>(ReservationRecord.class);
 	}
+
+	/* *
+	 * @Description: 体检记录
+	 * @Param: []
+	 * @return: com.homolo.framework.dao.DomainObjectDao<com.jiang.medical.platform.operation.domain.InspectRecord>
+	 * @Author: zhantuo.jiang
+	 * @date: 2019/12/18 10:24
+	 */
+	@Bean(name = PREFIX + "InspectRecordDao")
+	public DomainObjectDao<InspectRecord> generateInspectRecordDao() {
+		return new BaseHibernateDaoSupport<InspectRecord>(InspectRecord.class);
+	}
+
 }

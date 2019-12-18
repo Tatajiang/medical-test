@@ -99,10 +99,9 @@ public class LoginService {
                 return new RetInfo(RetInfo.FAILURE, "资料信息填写有误");
             }
             userManager.update(obj);
-            request.getSession().setAttribute(Constant.SESSION_USER_KEY, obj);
-
+            //request.getSession().setAttribute(Constant.SESSION_USER_KEY, obj);
             Map<String, Object> result = userManager.packUserInfo(obj);
-            return new RetInfo(RetInfo.SUCCESS, "资料个人信息成功", JsonUtil.getJsonStrFromEntity(result));
+            return new RetInfo(RetInfo.SUCCESS, "个人资料修改成功", JsonUtil.getJsonStrFromEntity(result));
         } catch (Exception e) {
             logger.error(e.getMessage());
             return new RetInfo(RetInfo.FAILURE, e.getMessage());
