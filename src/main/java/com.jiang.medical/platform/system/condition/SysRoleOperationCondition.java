@@ -7,11 +7,12 @@ import org.hibernate.criterion.Restrictions;
 
 import java.util.List;
 
-/**
- * 平台角色资源关联管理条件查询类
- * @author li
- * @date 2014-03-17
- * @version 1.0
+/* *
+ * @Description: 平台角色资源关联管理条件查询类
+ * @Param:
+ * @return:
+ * @Author: zhantuo.jiang
+ * @date: 2019/12/24 14:13
  */
 public class SysRoleOperationCondition implements HibernateCondition {
 	

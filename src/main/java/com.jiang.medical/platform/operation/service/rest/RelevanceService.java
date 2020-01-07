@@ -115,7 +115,13 @@ public class RelevanceService {
     public Object update(RequestParameters reqParams) {
         String id = reqParams.getParameter("id", String.class);
         try {
-            Relevance obj = new Relevance();
+            if (StringUtils.isBlank(id)) {
+                return new ServiceResult(ReturnResult.FAILURE, "参数错误");
+            }
+            Relevance obj = relevanceManager.getObject(id);
+            if (obj == null) {
+                return new ServiceResult(ReturnResult.FAILURE, "对象不存在");
+            }
             AutoEvaluationUtil.evaluationObject(reqParams, obj);
             //TODO 校验参数正确性
             relevanceManager.update(obj);

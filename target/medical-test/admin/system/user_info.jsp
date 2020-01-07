@@ -5,7 +5,6 @@
 <head>
 	<base href="<%=basePath%>">
 	<jsp:include page="../inc/resource.jsp" />
-	<script src="<%=path %>/js/jquery-3.3.1.min.js"></script>
 </head>
 <body style="background: #f7f7f7;" class="nav-md">
 	<div class="container-fluid">
@@ -13,13 +12,13 @@
 			<form role="form"  id="searchUserForm" >
 				<div class="container">
 		            <div class="row">
-		                <div class="form-group col-xs-3">
+		                <div class="form-group col-xs-2">
 		                    <div class="input-group">
 		                        <span class="input-group-addon">登录名</span>
 		                        <input id="likeLoginId" name="likeLoginId" class="form-control" type="text">
 		                    </div>
 		                </div>
-		                <div class="form-group col-xs-3">
+		                <div class="form-group col-xs-2">
 		                    <div class="input-group">
 		                        <span class="input-group-addon">姓名</span>
 		                        <input id="likeNickName" name="likeNickName" class="form-control" type="text">
@@ -152,8 +151,6 @@
 	<table id="commonSelectUserList"></table>
 	
 	<jsp:include page="../inc/bottom.jsp" />
-	<script src="<%=path %>/js/bootstrap-validator/custom-validator.js"></script>
-	
 	<script type="text/javascript">
 		$(document).ready(function(){
 			//搜索按钮

@@ -162,6 +162,3 @@ function serializeTableQueryParams(old, params){
 	}
 	return $.extend(params, old);
 }
-
-var basePath = 'http://43.4.112.101:8080/u2vd/', //'http://10.143.2.83:81/PGIS_S_TileMapServer/',//
-titeServePath = 'http://43.4.100.86/map/'; //'http://10.143.2.103:8080/PGIS_S_TileMapServer/';//

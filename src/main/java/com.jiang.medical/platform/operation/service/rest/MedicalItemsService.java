@@ -9,6 +9,7 @@ import com.homolo.framework.rest.RestService;
 import com.homolo.framework.rest.ReturnResult;
 import com.homolo.framework.service.ServiceResult;
 import com.jiang.medical.platform.operation.condition.MedicalItemsCondition;
+import com.jiang.medical.platform.operation.domain.Item;
 import com.jiang.medical.platform.operation.domain.MedicalItems;
 import com.jiang.medical.platform.operation.manager.MedicalItemsManager;
 import com.jiang.medical.util.AutoEvaluationUtil;
@@ -106,7 +107,13 @@ public class MedicalItemsService {
     public Object update(RequestParameters reqParams) {
         String id = reqParams.getParameter("id", String.class);
         try {
-            MedicalItems obj = new MedicalItems();
+            if (StringUtils.isBlank(id)) {
+                return new ServiceResult(ReturnResult.FAILURE, "参数错误");
+            }
+            MedicalItems obj = medicalItemsManager.getObject(id);
+            if (obj == null) {
+                return new ServiceResult(ReturnResult.FAILURE, "对象不存在");
+            }
             AutoEvaluationUtil.evaluationObject(reqParams, obj);
             //TODO 校验参数正确性
             medicalItemsManager.update(obj);

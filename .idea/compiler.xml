@@ -9,5 +9,8 @@
         <module name="medical-test" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="medical-test" target="1.7" />
+    </bytecodeTargetLevel>
   </component>
 </project>

@@ -8,9 +8,12 @@ import org.hibernate.criterion.Restrictions;
 
 import java.util.List;
 
-/**
- * @author Tata
- * 登录日志条件查询类
+/* *
+ * @Description: 登录日志条件查询类
+ * @Param:
+ * @return:
+ * @Author: zhantuo.jiang
+ * @date: 2019/12/24 14:13
  */
 public class LoginLogCondition implements HibernateCondition {
 	

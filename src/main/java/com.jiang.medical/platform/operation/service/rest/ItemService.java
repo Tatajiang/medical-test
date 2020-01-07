@@ -10,6 +10,7 @@ import com.homolo.framework.rest.ReturnResult;
 import com.homolo.framework.service.ServiceResult;
 import com.jiang.medical.platform.operation.condition.ItemCondition;
 import com.jiang.medical.platform.operation.condition.RelevanceCondition;
+import com.jiang.medical.platform.operation.domain.InspectRecord;
 import com.jiang.medical.platform.operation.domain.Item;
 import com.jiang.medical.platform.operation.domain.Relevance;
 import com.jiang.medical.platform.operation.manager.ItemManager;
@@ -141,9 +142,14 @@ public class ItemService {
     public Object update(RequestParameters reqParams) {
         String id = reqParams.getParameter("id", String.class);
         try {
-            Item obj = new Item();
+            if (StringUtils.isBlank(id)) {
+                return new ServiceResult(ReturnResult.FAILURE, "参数错误");
+            }
+            Item obj = itemManager.getObject(id);
+            if (obj == null) {
+                return new ServiceResult(ReturnResult.FAILURE, "对象不存在");
+            }
             AutoEvaluationUtil.evaluationObject(reqParams, obj);
-            //TODO 校验参数正确性
             itemManager.update(obj);
             return new ServiceResult(ReturnResult.SUCCESS, "修改成功");
         } catch (Exception e) {

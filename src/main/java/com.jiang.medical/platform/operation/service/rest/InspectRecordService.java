@@ -24,6 +24,7 @@ import com.jiang.medical.platform.system.domain.User;
 import com.jiang.medical.platform.system.manager.UserManager;
 import com.jiang.medical.util.AutoEvaluationUtil;
 import com.jiang.medical.util.DateUtil;
+import com.jiang.medical.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -161,9 +162,14 @@ public class InspectRecordService {
     public Object update(RequestParameters reqParams) {
         String id = reqParams.getParameter("id", String.class);
         try {
-            InspectRecord obj = new InspectRecord();
+            if (StringUtils.isBlank(id)) {
+                return new ServiceResult(ReturnResult.FAILURE, "参数错误");
+            }
+            InspectRecord obj = inspectRecordManager.getObject(id);
+            if (obj == null) {
+                return new ServiceResult(ReturnResult.FAILURE, "对象不存在");
+            }
             AutoEvaluationUtil.evaluationObject(reqParams, obj);
-            //TODO 校验参数正确性
             inspectRecordManager.update(obj);
             return new ServiceResult(ReturnResult.SUCCESS, "修改成功");
         } catch (Exception e) {

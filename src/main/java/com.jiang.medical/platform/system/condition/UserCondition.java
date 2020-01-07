@@ -17,10 +17,12 @@ import org.hibernate.criterion.Restrictions;
 import java.util.Date;
 import java.util.List;
 
-/** 
- * @Description 用户查询条件
- * @author yuanguo.huang
- * @date 2018-10-17 上午10:14:06 
+/* *
+ * @Description: 用户条件查询
+ * @Param:
+ * @return:
+ * @Author: zhantuo.jiang
+ * @date: 2019/12/24 14:12
  */
 public class UserCondition implements HibernateCondition {
 

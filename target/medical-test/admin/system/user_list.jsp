@@ -5,7 +5,6 @@
 <head>
 	<base href="<%=basePath%>">
 	<jsp:include page="../inc/resource.jsp" />
-	<script src="<%=path %>/js/jquery-3.3.1.min.js"></script>
 </head>
 <body style="background: #f7f7f7;" class="nav-md">
 	<div class="container-fluid">
@@ -13,7 +12,7 @@
 			<form role="form"  id="searchForm" >
 				<div class="container">
 		            <div class="row">
-		                <div class="form-group col-xs-3">
+		                <div class="form-group col-xs-2">
 		                    <div class="input-group">
 		                        <span class="input-group-addon">姓名</span>
 		                        <input name="likeNickName" class="form-control" type="text">
@@ -55,7 +54,6 @@
 	<!--编辑基本信息窗口end-->
 	
 	<jsp:include page="../inc/bottom.jsp" />
-	
 	<script type="text/javascript">
 		$(document).ready(function(){
 			//搜索按钮

@@ -5,7 +5,6 @@
 <head>
 	<base href="<%=basePath%>">
 	<jsp:include page="../inc/resource.jsp" />
-	<script src="<%=path %>/js/jquery-3.3.1.min.js"></script>
 </head>
 <body style="background: #f7f7f7;" class="nav-md">
 	<div class="container-fluid">
@@ -89,7 +88,6 @@
 	<!--查看角色模态框end-->
 	
 	<jsp:include page="../inc/bottom.jsp" />
-	<script src="<%=path %>/js/bootstrap-validator/custom-validator.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
 			//搜索按钮
