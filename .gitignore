@@ -1,5 +1,5 @@
-.idea
-.idea/*
-medical-test.iml
-target
-
+/target
+/.idea
+/out
+*.iml
+*.class
