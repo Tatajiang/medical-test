@@ -9,7 +9,7 @@ import java.io.IOException;
  * @author: zhantuo.jiang
  * @create: 2020-04-15 13:00
  */
-public class CORSFileter implements Filter {
+public class CORSFilter implements Filter {
 
 
     @Override
@@ -17,6 +17,13 @@ public class CORSFileter implements Filter {
 
     }
 
+    /* *
+     * @Description: 配置跨域信息
+     * @Param: [request, response, chain]
+     * @return: void
+     * @Author: zhantuo.jiang
+     * @date: 2020/5/4 10:07
+     */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
